@@ -168,13 +168,13 @@ function CreatedGadgetChatCard({
             <span className="mt-0.5 flex items-center gap-1.5 text-[12px] text-kumo-subtle">
               {gadget.isPending && (
                 <span className="rounded-full bg-kumo-fill px-1.5 py-0.5 text-[10px] font-medium leading-none">
-                  Draft
+                  Rascunho
                 </span>
               )}
               <span>
                 {gadget.isPending
-                    ? `New ${formatOf(gadget.output).noun.toLowerCase()} · Click to preview`
-                    : `${formatOf(gadget.output).noun} · Click to open`}
+                    ? `Novo ${formatOf(gadget.output).noun.toLowerCase()} · Clique para pré-visualizar`
+                    : `${formatOf(gadget.output).noun} · Clique para abrir`}
               </span>
             </span>
           </span>
@@ -1678,7 +1678,7 @@ const ToolGroupRow = memo(function ToolGroupRow({
             <span className="min-w-0 truncate">{group.label}</span>
             {group.hasError && (
               <span className="flex-shrink-0 rounded-full bg-kumo-danger-tint px-2 py-0.5 text-[10px] font-semibold uppercase tracking-[0.04em] text-kumo-danger">
-                Error
+                Erro
               </span>
             )}
             <CaretRight
