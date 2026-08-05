@@ -129,7 +129,7 @@ export default function Sidebar({
             />
             <SidebarItem
               to="/blueprints"
-              label="Modelos"
+              label="Templates"
               icon={<Blueprint size={14} weight="regular" />}
               collapsed={collapsed}
             />

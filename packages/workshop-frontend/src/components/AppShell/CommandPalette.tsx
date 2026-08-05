@@ -48,7 +48,7 @@ function mergeBlueprints(
   for (const b of library) {
     map.set(b.id, {
       id: b.id,
-      title: b.metadata.title || 'Modelo sem título',
+      title: b.metadata.title || 'Template sem título',
       recency: b.addedAt.getTime(),
     })
   }
@@ -56,7 +56,7 @@ function mergeBlueprints(
     const prev = map.get(b.id)
     map.set(b.id, {
       id: b.id,
-      title: b.title || prev?.title || 'Modelo sem título',
+      title: b.title || prev?.title || 'Template sem título',
       recency: Math.max(prev?.recency ?? 0, b.lastUpdated.getTime()),
     })
   }
@@ -249,7 +249,7 @@ export default function CommandPalette({
       },
       {
         id: 'nav-blueprints',
-        label: 'Modelos',
+        label: 'Templates',
         icon: <Blueprint size={15} />,
         run: () => navigate({ to: '/explore' }),
       },
@@ -270,7 +270,7 @@ export default function CommandPalette({
       .map((b) => ({
         id: `bp-${b.id}`,
         label: b.title,
-        hint: 'Modelo',
+        hint: 'Template',
         icon: <Blueprint size={15} className="text-kumo-inactive" />,
         run: () => navigate({ to: '/blueprint/$id', params: { id: b.id } }),
       }))
@@ -292,7 +292,7 @@ export default function CommandPalette({
       ? [
           { heading: 'Ações', items: refine(nav, nav.length) },
           { heading: 'Espaços de trabalho', items: refine(wsBase, 8) },
-          { heading: 'Modelos', items: refine(bpBase, 8) },
+          { heading: 'Templates', items: refine(bpBase, 8) },
         ]
       : [
           { heading: 'Ações', items: refine(nav, nav.length) },
