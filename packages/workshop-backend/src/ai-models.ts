@@ -113,6 +113,12 @@ const API_STREAMS: Record<string, StreamFunction<Api, SimpleStreamOptions>> = {
   "google-generative-ai": googleGenerativeAiStream as StreamFunction<Api, SimpleStreamOptions>,
 };
 
+// OpenAI's SDK invokes its fetch implementation with an undefined receiver. Keep the Worker
+// global as the receiver explicitly; otherwise workerd can surface the request failure only as a
+// generic provider "Connection error" before any HTTP response is available.
+const workerFetch: NonNullable<SimpleStreamOptions["fetch"]> =
+    (input, init) => globalThis.fetch(input, init);
+
 const ZERO_COST: ModelCost = { input: 0, output: 0, cacheRead: 0, cacheWrite: 0 };
 
 // Consult pi's builtin catalog for cost/compat metadata of a known model id. Unknown models are
@@ -323,6 +329,7 @@ function makeHandle(args: HandleArgs): ModelHandle {
           const replaced = await options.onPayload?.(payload, payloadModel);
           return bridgePdfAttachments(args.model.api, replaced ?? payload) ?? replaced;
         },
+        fetch: workerFetch,
         // NOTE(binding-transport): pi passes `options.fetch` into its SDK clients on all paths.
         // If Workers-binding-backed inference returns (upstream ask filed), inject a
         // fetch-to-binding shim here and relax the token requirements in ai-gateway.ts.

@@ -40,7 +40,7 @@ describe("bridgePdfAttachments", () => {
 
   it("rewrites OpenAI Responses PDF input_image parts into input_file parts", () => {
     const payload = {
-      model: "gpt-5.2",
+      model: "gpt-5.6-sol",
       input: [
         {
           role: "user",

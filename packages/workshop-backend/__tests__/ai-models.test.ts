@@ -412,7 +412,7 @@ describe("PDF attachment bridging", () => {
   it("sends OpenAI PDFs as input_file parts", async () => {
     const handle = getModel(env({ CF_AI_GATEWAY: undefined }), {
       provider: "openai",
-      model: "gpt-5.2",
+      model: "gpt-5.6-sol",
       apiToken: "direct-api-token",
     }, INITIATOR);
     expect(handle.model.api).toBe("openai-responses");
