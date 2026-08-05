@@ -8,9 +8,9 @@ interface DeleteConfirmationDialogProps {
   title: string
   description: ReactNode
   isDeleting?: boolean
-  /** Label for the confirm button (defaults to "Delete"). */
+  /** Label for the confirm button (defaults to "Excluir"). */
   confirmLabel?: string
-  /** Label for the confirm button while the action runs (defaults to "Deleting..."). */
+  /** Label for the confirm button while the action runs (defaults to "Excluindo..."). */
   confirmingLabel?: string
   onOpenChange: (open: boolean) => void
   onConfirm: () => void
@@ -21,8 +21,8 @@ export default function DeleteConfirmationDialog({
   title,
   description,
   isDeleting = false,
-  confirmLabel = 'Delete',
-  confirmingLabel = 'Deleting...',
+  confirmLabel = 'Excluir',
+  confirmingLabel = 'Excluindo...',
   onOpenChange,
   onConfirm,
 }: DeleteConfirmationDialogProps) {
@@ -52,7 +52,7 @@ export default function DeleteConfirmationDialog({
                 {...props}
                 className="!h-7 !w-7"
                 disabled={isDeleting}
-                aria-label="Close"
+                aria-label="Fechar"
               >
                 <X size={16} />
               </WorkshopIconButton>
@@ -68,7 +68,7 @@ export default function DeleteConfirmationDialog({
                 className="!h-9"
                 disabled={isDeleting}
               >
-                Cancel
+                Cancelar
               </WorkshopButton>
             )}
           />

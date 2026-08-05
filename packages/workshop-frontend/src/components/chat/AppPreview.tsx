@@ -15,12 +15,12 @@ export default function AppPreview() {
         {/* App header */}
         <div className="flex items-center justify-between mb-6">
           <div>
-            <Text variant="heading2" as="h1">Channel Summarizer</Text>
+            <Text variant="heading2" as="h1">Resumidor de Canais</Text>
             <p className="text-sm text-kumo-subtle mt-1">
-              Daily digest of your Slack channels, powered by Workers AI
+              Resumo diário dos seus canais do Slack, com tecnologia da Workers AI
             </p>
           </div>
-          <Badge variant="success">Live</Badge>
+          <Badge variant="success">Ativo</Badge>
         </div>
 
         {/* Channel cards */}
@@ -43,20 +43,20 @@ export default function AppPreview() {
                   <Circle size={5} className="text-kumo-subtle mt-1.5 flex-shrink-0" weight="fill" />
                   <p className="text-sm text-kumo-subtle">
                     {row.channel === '#general'
-                      ? 'Team discussed Q1 planning timeline and agreed on March 15 deadline for proposals'
+                      ? 'A equipe discutiu o cronograma de planejamento do 1º trimestre e definiu 15 de março como prazo das propostas'
                       : row.channel === '#engineering'
-                        ? 'Deployed v2.4.1 hotfix for auth timeout. Monitoring dashboards show latency back to normal'
-                        : 'Active discussion about weekend hackathon projects and lunch plans for Friday'}
+                        ? 'Implantada a correção v2.4.1 para o tempo limite de autenticação. Os painéis de monitoramento mostram latência normalizada'
+                        : 'Discussão ativa sobre projetos do hackathon de fim de semana e planos de almoço para sexta-feira'}
                   </p>
                 </div>
                 <div className="flex items-start gap-2">
                   <Circle size={5} className="text-kumo-subtle mt-1.5 flex-shrink-0" weight="fill" />
                   <p className="text-sm text-kumo-subtle">
                     {row.channel === '#general'
-                      ? '3 action items assigned, 2 decisions made'
+                      ? '3 itens de ação atribuídos, 2 decisões tomadas'
                       : row.channel === '#engineering'
-                        ? 'RFC for new caching layer received 5 approvals, moving to implementation'
-                        : '12 participants, trending topics: hackathon, team lunch, offsite'}
+                        ? 'A RFC da nova camada de cache recebeu 5 aprovações e segue para implementação'
+                        : '12 participantes, temas em alta: hackathon, almoço da equipe, evento externo'}
                   </p>
                 </div>
               </div>
@@ -67,7 +67,7 @@ export default function AppPreview() {
         {/* Quiet channels */}
         <div className="mt-6">
           <div className="text-xs font-semibold text-kumo-subtle uppercase tracking-wider mb-3">
-            No new activity
+            Sem nova atividade
           </div>
           <div className="flex flex-wrap gap-2">
             {sampleDataRows.filter(r => !r.unread).map((row) => (
