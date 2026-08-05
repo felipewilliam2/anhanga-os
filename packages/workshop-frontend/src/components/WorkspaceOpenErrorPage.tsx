@@ -10,20 +10,20 @@ export type WorkspaceOpenFailureKind = 'access-denied' | 'not-found' | 'unexpect
 
 const CONTENT = {
   'access-denied': {
-    title: "You don't have access to this workspace",
-    message: 'Ask the workspace owner to grant you access, then try again.',
+    title: "Você não tem acesso a este espaço de trabalho",
+    message: 'Peça ao proprietário do espaço de trabalho para conceder acesso a você e tente novamente.',
     Icon: Lock,
     retryable: true,
   },
   'not-found': {
-    title: 'Workspace not found',
-    message: 'The link may be incorrect, or the workspace may have been deleted.',
+    title: 'Espaço de trabalho não encontrado',
+    message: 'O link pode estar incorreto, ou o espaço de trabalho pode ter sido excluído.',
     Icon: MagnifyingGlass,
     retryable: false,
   },
   unexpected: {
-    title: "We couldn't load this workspace",
-    message: 'Try again. If the problem continues, return to your workspaces.',
+    title: "Não foi possível carregar este espaço de trabalho",
+    message: 'Tente novamente. Se o problema continuar, volte para seus espaços de trabalho.',
     Icon: WarningCircle,
     retryable: true,
   },
@@ -88,11 +88,11 @@ export default function WorkspaceOpenErrorPage({ kind, onRetry, onGoToWorkspaces
             className="!h-9"
             onClick={onGoToWorkspaces}
           >
-            Go to workspaces
+            Ir para espaços de trabalho
           </WorkshopButton>
           {retryable && (
             <WorkshopButton tone="primary" onClick={onRetry}>
-              Try again
+              Tentar novamente
             </WorkshopButton>
           )}
         </div>

@@ -2957,7 +2957,7 @@ export const ChatInput = ({
       ? "warning"
       : "log";
   const selectedModelLabel = selectedModel == null
-    ? "No agent"
+    ? "Sem agente"
     : models.find((model) => model.id === selectedModel)?.name ?? selectedModel;
 
   const hasReadyAttachment = pendingAttachments.some(
@@ -3130,7 +3130,7 @@ export const ChatInput = ({
                   : isAgentActive
                     ? "Waiting for agent…"
                     : newChat
-                      ? "Start a new conversation…"
+                      ? "Inicie uma nova conversa…"
                       : "Ask a follow-up…"
               }
               autoFocus={autoFocus}
@@ -3309,7 +3309,7 @@ export const ChatInput = ({
               className="inline-flex h-8 flex-shrink-0 cursor-pointer items-center gap-1.5 rounded-lg px-2 text-[13px] leading-none tracking-[-0.25px] text-kumo-inactive transition-[background-color,color,transform] duration-150 ease-out hover:bg-kumo-tint hover:text-kumo-subtle focus-visible:bg-kumo-tint focus-visible:text-kumo-subtle focus-visible:outline-none active:scale-[0.97]"
             >
               <Plug size={15} className="flex-shrink-0" />
-              <span className={`leading-none ${styles.attachLabelText}`}>{attachLabel ?? "Add resource"}</span>
+              <span className={`leading-none ${styles.attachLabelText}`}>{attachLabel ?? "Adicionar recurso"}</span>
             </button>
           </div>
 
@@ -3353,7 +3353,7 @@ export const ChatInput = ({
                     onClick={() => onModelChange(null)}
                     className="!h-auto rounded-xl !px-2 !py-1.5 text-[12px] leading-4 font-normal tracking-[-0.15px] text-kumo-subtle transition-colors data-highlighted:bg-kumo-tint/70 data-highlighted:text-kumo-default"
                   >
-                    <span className="min-w-0 flex-1 truncate">No agent</span>
+                    <span className="min-w-0 flex-1 truncate">Sem agente</span>
                     {selectedModel == null && (
                       <Check size={12} weight="bold" className="ml-3 flex-shrink-0 text-kumo-inactive" />
                     )}

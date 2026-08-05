@@ -10,8 +10,8 @@ export default function ViewToggle({
   onChange: (view: 'grid' | 'list') => void
 }) {
   const options = [
-    { value: 'list' as const, Icon: List, label: 'List view' },
-    { value: 'grid' as const, Icon: GridFour, label: 'Grid view' },
+    { value: 'list' as const, Icon: List, label: 'Visualização em lista' },
+    { value: 'grid' as const, Icon: GridFour, label: 'Visualização em grade' },
   ]
   return (
     <div className="inline-flex shrink-0 items-center gap-0.5 rounded-lg border border-kumo-line bg-kumo-base p-0.5">
