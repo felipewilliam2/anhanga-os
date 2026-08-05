@@ -31,7 +31,8 @@ Termos de produto sem tradução óbvia — decisão tomada agora para não have
 |---|---|---|
 | Workspace | Espaço de trabalho | |
 | Gadget | Gadget | Mantido — termo de produto, como "app"; "aplicativo" é aceitável como alternativa pontual quando "Gadget" já apareceu na mesma frase |
-| Blueprint | Modelo | "Blueprint" = molde para criar um Gadget |
+| Blueprint | Template | Revisado na Tarefa 3: "Modelo" colidia com "modelo de IA" (AI model), já em uso desde a Tarefa 2. "Template" é empréstimo comum no português técnico brasileiro e evita a ambiguidade. |
+| Model (AI) | Modelo | Só para modelo de IA (ex.: "Escolha seu modelo", seletor de modelo). Nunca usar "Modelo" para Blueprint — ver linha acima. |
 | Gatekeeper | Guardião | |
 | Connection / Connector | Conexão / Conector | |
 | Vendor | Provedor | Ex.: "Provedores conectados" |
@@ -195,7 +196,7 @@ Já parcialmente conhecido desta sessão (nome do site, logo, tema).
 - [ ] Conferir visualmente: página de conexões, conectar um provedor (ex.: e-mail ou Google em modo de teste), seletor de modelo de IA
 - [ ] Commit: `git commit -m "i18n: traduzir conexões e guardiões para pt-BR"`
 
-## Tarefa 7 — Modelos (Blueprints)
+## Tarefa 7 — Templates (Blueprints)
 
 **Arquivos:**
 - `packages/workshop-frontend/src/BlueprintsPage.tsx`
@@ -212,8 +213,8 @@ Já parcialmente conhecido desta sessão (nome do site, logo, tema).
 
 - [ ] Traduzir os arquivos acima
 - [ ] `node scripts/check-pt-br-strings.mjs packages/workshop-frontend/src/BlueprintsPage.tsx packages/workshop-frontend/src/BlueprintLandingPage.tsx packages/workshop-frontend/src/BlueprintModal.tsx packages/workshop-frontend/src/components/BlueprintBindingCard.tsx packages/workshop-frontend/src/components/BlueprintCard.tsx packages/workshop-frontend/src/components/BlueprintList.tsx packages/workshop-frontend/src/components/BlueprintPreviewImage.tsx "packages/workshop-frontend/src/routes/blueprint.\$id.tsx" packages/workshop-frontend/src/routes/blueprints.tsx packages/workshop-frontend/src/routes/outputs.tsx packages/workshop-frontend/src/GadgetExportMenu.tsx`
-- [ ] Conferir visualmente: página de modelos, página de saídas, exportar um gadget
-- [ ] Commit: `git commit -m "i18n: traduzir modelos (blueprints) para pt-BR"`
+- [ ] Conferir visualmente: página de templates, página de saídas, exportar um gadget
+- [ ] Commit: `git commit -m "i18n: traduzir templates (blueprints) para pt-BR"`
 
 ## Tarefa 8 — Editor de espaço de trabalho e chat (maior superfície — fazer por último entre as principais)
 
