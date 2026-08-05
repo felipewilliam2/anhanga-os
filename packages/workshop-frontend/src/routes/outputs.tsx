@@ -660,7 +660,7 @@ function OutputsPage() {
               </p>
             </div>
             {/* Offer the deployment's formats here rather than sending them to the home page. */}
-            {!isFiltered && <NewFormatRow label="Start with" />}
+            {!isFiltered && <NewFormatRow label="Começar com" />}
           </div>
         ) : view === 'grid' ? (
           <div className="grid grid-cols-2 gap-4 px-3 sm:grid-cols-3 lg:grid-cols-4">

@@ -78,7 +78,7 @@ export default function AdminFormatsPanel({
       await onChanged()
     } catch (err) {
       console.error('Format update failed:', err)
-      toasts.add({ title: "Couldn't update standard formats", variant: 'error' })
+      toasts.add({ title: 'Não foi possível atualizar os formatos padrão', variant: 'error' })
     } finally {
       setBusy(false)
     }
@@ -94,10 +94,11 @@ export default function AdminFormatsPanel({
 
   return (
     <div className="rounded-xl border border-kumo-line bg-kumo-elevated p-6">
-      <h2 className="mb-1 text-lg font-semibold text-kumo-strong">Standard formats</h2>
+      <h2 className="mb-1 text-lg font-semibold text-kumo-strong">Formatos padrão</h2>
       <p className="mb-5 text-sm text-kumo-subtle">
-        A promoted blueprint is offered by name (“New Doc”, “New Slides”) wherever people start
-        something, and the agent is told to prefer it over building the same thing from scratch.
+        Um template promovido é oferecido pelo nome (“Novo Doc”, “Novo Slides”) onde quer que as
+        pessoas comecem algo, e o agente é instruído a preferi-lo em vez de construir a mesma coisa
+        do zero.
       </p>
 
       <PreviewStrip formats={offered} />
@@ -130,13 +131,13 @@ export default function AdminFormatsPanel({
           render={
             <Button variant="secondary" disabled={busy || available.length === 0}>
               <Plus size={14} className="mr-1.5" />
-              Promote a blueprint
+              Promover um template
             </Button>
           }
         />
         <DropdownMenu.Content className={MENU_CONTENT}>
           <p className="px-2 pb-1.5 pt-1 text-[11px] font-medium uppercase tracking-[0.06em] text-kumo-inactive">
-            Offer as a standard format
+            Oferecer como formato padrão
           </p>
           {available.map((candidate) => (
             <DropdownMenu.Item
@@ -147,12 +148,12 @@ export default function AdminFormatsPanel({
               <FormatGlyph output={candidate.declared} size="lg" className="shrink-0 text-kumo-subtle" />
               <span className="min-w-0">
                 <span className="block truncate text-[13px] text-kumo-default">
-                  {candidate.title || 'Untitled blueprint'}
+                  {candidate.title || 'Template sem título'}
                 </span>
                 <span className="block truncate text-[11px] text-kumo-inactive">
                   {candidate.declared
-                    ? `Produces ${candidate.declared.plural}`
-                    : 'No declared format. You’ll name it.'}
+                    ? `Produz ${candidate.declared.plural}`
+                    : 'Nenhum formato declarado. Você vai nomeá-lo.'}
                 </span>
               </span>
             </DropdownMenu.Item>
@@ -168,11 +169,11 @@ function PreviewStrip({ formats }: { formats: AdminFormat[] }) {
   return (
     <div className="mb-5 rounded-lg border border-dashed border-kumo-line bg-kumo-tint/40 p-4">
       <p className="mb-2.5 text-[11px] font-medium uppercase tracking-[0.06em] text-kumo-inactive">
-        What people will see
+        O que as pessoas verão
       </p>
       {formats.length === 0 ? (
         <p className="text-[13px] italic text-kumo-inactive">
-          Nothing yet. People will only see “New workspace”.
+          Nada ainda. As pessoas só verão “Novo espaço de trabalho”.
         </p>
       ) : (
         <div className="flex flex-wrap items-center gap-2">
@@ -182,13 +183,13 @@ function PreviewStrip({ formats }: { formats: AdminFormat[] }) {
               className="flex items-center gap-2 rounded-full border border-kumo-line bg-kumo-base px-3.5 py-2 text-[13px] leading-[18px] tracking-[-0.25px] text-kumo-default"
             >
               <FormatGlyph output={format.output} size="md" className="text-kumo-subtle" />
-              New {format.output!.noun}
+              Novo {format.output!.noun}
             </span>
           ))}
         </div>
       )}
       <p className="mt-2.5 text-[12px] leading-4 text-kumo-subtle">
-        In the composer’s + menu, the command palette, and on an empty Outputs page, in this order.
+        No menu “+” do compositor, na paleta de comandos e em uma página de Saídas vazia, nesta ordem.
       </p>
     </div>
   )
@@ -197,10 +198,10 @@ function PreviewStrip({ formats }: { formats: AdminFormat[] }) {
 function EmptyState() {
   return (
     <div className="mb-5 rounded-lg border border-kumo-line bg-kumo-base px-4 py-5 text-center">
-      <p className="text-sm font-medium text-kumo-default">No standard formats yet</p>
+      <p className="text-sm font-medium text-kumo-default">Ainda sem formatos padrão</p>
       <p className="mx-auto mt-1 max-w-md text-[13px] leading-[18px] text-kumo-subtle">
-        Promote a blueprint to offer it by name wherever people start something, and to have the
-        agent prefer it over building the same thing from scratch.
+        Promova um template para oferecê-lo pelo nome onde quer que as pessoas comecem algo, e para
+        que o agente o prefira em vez de construir a mesma coisa do zero.
       </p>
     </div>
   )
@@ -241,7 +242,7 @@ function FormatRow({
           {format.missing ? (
             <span
               className="grid h-9 w-9 shrink-0 place-items-center rounded-lg bg-kumo-tint text-kumo-danger"
-              title="This blueprint no longer exists"
+              title="Este template não existe mais"
             >
               <Warning size={16} />
             </span>
@@ -254,18 +255,18 @@ function FormatRow({
           <span className="min-w-0 flex-1">
             <span className="flex items-center gap-2">
               <span className="truncate text-sm font-medium text-kumo-default">
-                {format.output ? `New ${format.output.noun}` : format.blueprintTitle || format.blueprintId}
+                {format.output ? `Novo ${format.output.noun}` : format.blueprintTitle || format.blueprintId}
               </span>
-              {format.bundled && <Badge>Bundled</Badge>}
-              {!format.enabled && !format.missing && <Badge>Off</Badge>}
-              {needsNaming && <Badge tone="warn">Needs a name</Badge>}
+              {format.bundled && <Badge>Incluído</Badge>}
+              {!format.enabled && !format.missing && <Badge>Desligado</Badge>}
+              {needsNaming && <Badge tone="warn">Precisa de um nome</Badge>}
             </span>
             <span className="mt-0.5 block truncate text-xs text-kumo-subtle">
               {format.missing
-                ? 'Blueprint deleted. Remove this entry.'
+                ? 'Template excluído. Remova esta entrada.'
                 : needsNaming
-                ? 'This blueprint doesn’t declare what it produces. Give it a name to offer it.'
-                : `${format.blueprintTitle} · shown under ${format.output!.plural} on Outputs`}
+                ? 'Este template não declara o que produz. Dê um nome a ele para oferecê-lo.'
+                : `${format.blueprintTitle} · exibido em ${format.output!.plural} em Saídas`}
             </span>
           </span>
 
@@ -281,10 +282,10 @@ function FormatRow({
             open ? 'opacity-100' : 'opacity-0 group-hover:opacity-100 focus-within:opacity-100'
           }`}
         >
-          <IconButton label="Move up" disabled={busy || isFirst} onClick={() => onMove(-1)}>
+          <IconButton label="Mover para cima" disabled={busy || isFirst} onClick={() => onMove(-1)}>
             <ArrowUp size={13} />
           </IconButton>
-          <IconButton label="Move down" disabled={busy || isLast} onClick={() => onMove(1)}>
+          <IconButton label="Mover para baixo" disabled={busy || isLast} onClick={() => onMove(1)}>
             <ArrowDown size={13} />
           </IconButton>
         </div>
@@ -300,21 +301,21 @@ function FormatRow({
         <div className="flex flex-col gap-4 border-t border-kumo-line px-3 py-4">
           {format.missing ? (
             <p className="text-[13px] text-kumo-subtle">
-              The blueprint behind this format was deleted, so nobody is offered it. Remove the
-              entry.
+              O template por trás deste formato foi excluído, então ele não é mais oferecido a
+              ninguém. Remova a entrada.
             </p>
           ) : (
             <>
               <Fieldset
-                title="How it’s presented"
+                title="Como é apresentado"
                 detail={
-                  'Leave a field empty to use the name the blueprint declares. ' +
+                  'Deixe um campo em branco para usar o nome que o template declara. ' +
                   (format.bundled
-                    ? 'A bundled blueprint can change its declared names when this deployment ' +
-                      'updates; a value you type here stays as you set it. '
+                    ? 'Um template incluído pode mudar seus nomes declarados quando esta ' +
+                      'implantação for atualizada; um valor digitado aqui permanece como você o definiu. '
                     : '') +
-                  'Applies to outputs made from now on — existing ones keep the name they were ' +
-                  'made with.'
+                  'Aplica-se a saídas criadas a partir de agora — as existentes mantêm o nome com ' +
+                  'que foram criadas.'
                 }
               >
                 <div className="flex items-center gap-4">
@@ -331,7 +332,7 @@ function FormatRow({
                       onPick={(icon) => onPatch({ overrides: { icon } })}
                     />
                     <OverrideField
-                      label="Name"
+                      label="Nome"
                       value={format.output?.noun ?? format.overrides?.noun ?? ''}
                       declared={format.declared?.noun}
                       disabled={busy}
@@ -352,19 +353,19 @@ function FormatRow({
                   <figure className="hidden shrink-0 flex-col items-center gap-1.5 sm:flex">
                     <FormatPreview output={format.output} width={112} />
                     <figcaption className="text-[10px] uppercase tracking-[0.06em] text-kumo-inactive">
-                      On Outputs
+                      Em Saídas
                     </figcaption>
                   </figure>
                 </div>
               </Fieldset>
 
               <Fieldset
-                title="How the agent picks it"
-                detail="Standard formats are listed first in the agent’s catalog, as the entry below — the blueprint’s own description does most of the work. Add a hint only if the agent needs to know when to prefer this format over another one."
+                title="Como o agente o escolhe"
+                detail="Formatos padrão são listados primeiro no catálogo do agente, como a entrada abaixo — a própria descrição do template faz a maior parte do trabalho. Adicione uma dica apenas se o agente precisar saber quando preferir este formato em vez de outro."
               >
                 <OverrideField
-                  label="Hint"
-                  placeholder="e.g. prefer for customer-facing decks"
+                  label="Dica"
+                  placeholder="ex.: preferir para apresentações voltadas ao cliente"
                   value={format.agentHint}
                   disabled={busy}
                   onCommit={(agentHint) => onPatch({ agentHint: agentHint ?? '' })}
@@ -377,7 +378,7 @@ function FormatRow({
                     <Sparkle size={12} className="mt-0.5 shrink-0" />
                     <span className="min-w-0">
                       <span className="block">
-                        “{format.output.noun}” — a standard format on this deployment
+                        “{format.output.noun}” — um formato padrão nesta implantação
                         {format.agentHint ? ` -- ${format.agentHint}` : ''}
                       </span>
                       {format.blueprintDescription && (
@@ -397,16 +398,16 @@ function FormatRow({
               <div className="flex items-end justify-between gap-4 border-t border-kumo-line pt-3">
                 <p className="text-[12px] leading-4 text-kumo-subtle">
                   {(format.enabled
-                    ? 'Turning this off removes it from the menus above and from the agent’s catalog. Outputs already made from it keep working. '
-                    : 'Currently hidden from the menus above and from the agent’s catalog. ') +
+                    ? 'Desativar isto o remove dos menus acima e do catálogo do agente. As saídas já criadas a partir dele continuam funcionando. '
+                    : 'Atualmente oculto dos menus acima e do catálogo do agente. ') +
                     (format.bundled
-                      ? 'It ships with the deployment, so it stays in this list either way.'
+                      ? 'Ele vem com a implantação, então permanece nesta lista de qualquer forma.'
                       : '')}
                 </p>
                 {!format.bundled && (
                   <Button variant="secondary" disabled={busy} onClick={onRemove}>
                     <Trash size={13} className="mr-1.5" />
-                    Stop offering
+                    Parar de oferecer
                   </Button>
                 )}
               </div>
@@ -417,7 +418,7 @@ function FormatRow({
             <div className="flex justify-end">
               <Button variant="secondary" disabled={busy} onClick={onRemove}>
                 <Trash size={13} className="mr-1.5" />
-                Remove
+                Remover
               </Button>
             </div>
           )}
@@ -491,7 +492,7 @@ function OverrideField({
       <span className="text-[11px] font-medium uppercase tracking-[0.06em] text-kumo-inactive">
         {label}
         {overridden && (
-          <span className="ml-1 normal-case tracking-normal text-kumo-subtle">(overridden)</span>
+          <span className="ml-1 normal-case tracking-normal text-kumo-subtle">(substituído)</span>
         )}
       </span>
       <Input
@@ -525,7 +526,7 @@ function IconPicker({
   return (
     <label className="flex flex-col gap-1">
       <span className="text-[11px] font-medium uppercase tracking-[0.06em] text-kumo-inactive">
-        Icon
+        Ícone
       </span>
       <DropdownMenu>
         <DropdownMenu.Trigger
@@ -533,7 +534,7 @@ function IconPicker({
             <button
               type="button"
               disabled={disabled}
-              aria-label="Choose icon"
+              aria-label="Escolher ícone"
               className="grid h-9 w-9 cursor-pointer place-items-center rounded-lg border border-kumo-line bg-kumo-base text-kumo-subtle transition-colors hover:text-kumo-default disabled:cursor-default"
             >
               <FormatGlyph output={selected && { ...GENERIC_OUTPUT, icon: selected }} size="lg" />
