@@ -50,6 +50,8 @@ Termos de produto sem tradução óbvia — decisão tomada agora para não have
 | Share | Compartilhar | |
 | Hook | Hook | Mantido — termo técnico do domínio (automação) |
 | Capsule | Cápsula | |
+| Deployment | Implantação | Adicionado na Tarefa 2 (aparece de novo em Admin/Settings) |
+| Login (substantivo) | Login | Mantido como empréstimo consagrado no português brasileiro (ex.: "O login foi cancelado."); o verbo "sign in" continua "Entrar" |
 
 Se aparecer um termo novo durante a tradução que não está nesta tabela, pare e adicione a decisão aqui antes de seguir — não improvise traduções diferentes para o mesmo termo em arquivos diferentes.
 
@@ -107,7 +109,8 @@ O "chrome" que aparece em toda tela autenticada.
 - `packages/workshop-frontend/src/TopBarNotice.tsx`
 - `packages/workshop-frontend/src/components/SiteLogo.tsx`
 - `packages/workshop-frontend/src/FrontendErrorBoundary.tsx`
-- `packages/workshop-frontend/src/routes/__root.tsx` (estados de "Loading...", "Connection lost — reconnecting…", "Authentication error", botão "Retry" — renderizados para qualquer usuário autenticado)
+- `packages/workshop-frontend/src/routes/__root.tsx` (estados de "Loading...", "Connection lost — reconnecting…", "Authentication error", botão "Retry" — renderizados para qualquer usuário autenticado; inclui também `"Authenticating..."` sinalizado pela Tarefa 2 como fora do escopo dela)
+- `packages/workshop-frontend/index.html` (atributo `lang="en"` no `<html>` — achado pela Tarefa 2: com o app já em pt-BR, isso faz o tradutor automático do Chrome tentar "traduzir de volta" o app para usuários reais; trocar para `lang="pt-BR"`)
 
 - [ ] Traduzir os arquivos acima
 - [ ] `node scripts/check-pt-br-strings.mjs packages/workshop-frontend/src/components/AppShell packages/workshop-frontend/src/components/Header.tsx packages/workshop-frontend/src/components/UserMenu.tsx packages/workshop-frontend/src/components/AnnouncementBanner.tsx packages/workshop-frontend/src/TopBarNotice.tsx packages/workshop-frontend/src/components/SiteLogo.tsx packages/workshop-frontend/src/FrontendErrorBoundary.tsx packages/workshop-frontend/src/routes/__root.tsx`
