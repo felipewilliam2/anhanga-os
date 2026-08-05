@@ -332,7 +332,7 @@ export default function ObserverConfigModal({
                           {matching.map(acct => (
                             <Select.Option key={acct.id} value={String(acct.id)}>
                               {accountLabel(acct, acct.id)}
-                              {!acct.credentialsValid ? ' (expirado)' : ''}
+                              {!acct.credentialsValid ? ' (expirada)' : ''}
                             </Select.Option>
                           ))}
                         </Select>

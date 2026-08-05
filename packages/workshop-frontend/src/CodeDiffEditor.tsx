@@ -5,7 +5,7 @@ import type { editor } from 'monaco-editor'
 import type * as Y from 'yjs'
 import { MonacoBinding } from 'y-monaco'
 import { defineGadgetsCodeTheme, getGadgetsCodeTheme, monoFont } from './components/monacoTheme'
-import { buildDiffModel, type DiffModel } from './diff/diffModel'
+import { buildDiffModel, type DiffModel, type DiffStatus } from './diff/diffModel'
 import { renderDiffLayer, renderSplitDiffLayer } from './diff/diffRenderer'
 import { getLanguage } from './getLanguage'
 import { useTheme } from './ThemeContext'
@@ -23,6 +23,16 @@ type DiffLayoutPreference = 'stacked' | 'split'
 
 const DIFF_LAYOUT_STORAGE_KEY = 'gadgets:workshop:diffLayout'
 const SPLIT_DIFF_MIN_WIDTH = 1100
+
+// Display labels for DiffStatus (defined in ./diff/diffModel). Kept local to the display layer so
+// the underlying type/logic stays untouched -- same pattern as THEME_MODE_LABELS in
+// SidebarUtilityStrip.tsx.
+const STATUS_LABELS: Record<DiffStatus, string> = {
+  Added: 'Adicionado',
+  Deleted: 'Excluído',
+  Modified: 'Modificado',
+  Unchanged: 'Sem alteração',
+}
 
 function getInitialDiffLayoutPreference(): DiffLayoutPreference {
   try {
@@ -447,7 +457,7 @@ export default function CodeDiffEditor({
             style={{ fontFamily: monoFont }}
           >
             {model.status !== 'Modified' && (
-              <span className="text-[10px] font-medium text-kumo-subtle">{model.status}</span>
+              <span className="text-[10px] font-medium text-kumo-subtle">{STATUS_LABELS[model.status]}</span>
             )}
             <span className="text-kumo-danger">-{model.deletions}</span>
             <span className="text-kumo-success">+{model.additions}</span>
