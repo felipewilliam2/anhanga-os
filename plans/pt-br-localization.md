@@ -272,6 +272,7 @@ Já parcialmente conhecido desta sessão (nome do site, logo, tema).
 - [ ] Rodar a varredura completa: `node scripts/check-pt-br-strings.mjs packages/workshop-frontend/src` e revisar toda a lista — nesse ponto deve sobrar muito pouco (textos curtos que o heurístico não pega, código de terceiros, etc.)
 - [ ] Rodar `pnpm --filter @gadgets/workshop-frontend test` — nenhuma mudança de texto deve quebrar teste (se algum teste comparar strings literais em inglês, atualizar o teste junto)
 - [ ] Passar pelo app inteiro uma vez, ponta a ponta, como um usuário novo: criar conta → configuração inicial → criar um espaço de trabalho → conversar com o agente → conectar um provedor → abrir Admin → sair
+- [ ] Atenção especial à página de Admin (Tarefa 5): a verificação visual interativa dela não pôde ser feita durante a implementação nem durante a revisão (ferramenta de browser indisponível nas duas ocasiões) — conferir com cuidado as 4 abas (Em geral, Guardiões, Formatos, Acesso) e a página de Perfil por texto cortado/quebrado com strings mais longas em português
 - [ ] Conferir consistência do glossário: buscar por termos que possam ter sido traduzidos de forma diferente em arquivos diferentes (ex.: `grep -rn "Área de trabalho\|Espaço de trabalho" packages/workshop-frontend/src` — só deve aparecer uma forma)
 - [ ] Commit final se sobrar algo: `git commit -m "i18n: ajustes finais de consistência pt-BR"`
 
