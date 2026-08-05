@@ -55,6 +55,7 @@ Termos de produto sem tradução óbvia — decisão tomada agora para não have
 | Login (substantivo) | Login | Mantido como empréstimo consagrado no português brasileiro (ex.: "O login foi cancelado."); o verbo "sign in" continua "Entrar" |
 | Binding | Vinculação | Adicionado na Tarefa 6 (Conexões/Guardiões). Refere-se ao vínculo entre um gadget e um recurso/conexão externa (ex.: "Nome da vinculação", "A vinculação X será removida"). |
 | Configurator | Configurador | Adicionado na Tarefa 6 — tradução literal direta, sem ambiguidade com outros termos do glossário. |
+| Diff | Diff | Adicionado na Tarefa 8a — mantido, termo técnico consagrado em ferramentas de código, sem tradução natural equivalente. |
 
 Se aparecer um termo novo durante a tradução que não está nesta tabela, pare e adicione a decisão aqui antes de seguir — não improvise traduções diferentes para o mesmo termo em arquivos diferentes.
 
