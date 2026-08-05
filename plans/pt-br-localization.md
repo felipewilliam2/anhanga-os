@@ -56,6 +56,14 @@ Termos de produto sem tradução óbvia — decisão tomada agora para não have
 | Binding | Vinculação | Adicionado na Tarefa 6 (Conexões/Guardiões). Refere-se ao vínculo entre um gadget e um recurso/conexão externa (ex.: "Nome da vinculação", "A vinculação X será removida"). |
 | Configurator | Configurador | Adicionado na Tarefa 6 — tradução literal direta, sem ambiguidade com outros termos do glossário. |
 | Diff | Diff | Adicionado na Tarefa 8a — mantido, termo técnico consagrado em ferramentas de código, sem tradução natural equivalente. |
+| Chat | Conversa | Adicionado na Tarefa 8b. Usado para o substantivo geral ("Excluir conversa", "Renomear conversa", "Nenhuma conversa ainda"); a aba/rótulo curto "Chat" (ex.: nas abas Chat/Conexões do modo sidebar) foi mantido como está — ver observação da Tarefa 8b no relatório. |
+| Draft | Rascunho | Adicionado na Tarefa 8b (alterações de rascunho no chat: "Rascunho de alterações pendente", "Salvar rascunho", "Descartar rascunho"). |
+| Attachment | Anexo | Adicionado na Tarefa 8b (anexos de chat: "Remover anexo", "Arquivo anexado", nome de arquivo padrão ao baixar um anexo sem nome). |
+| Thinking (reasoning trace) | Raciocínio / Raciocinando | Adicionado na Tarefa 8b. "Show/Hide thinking" → "Mostrar/Ocultar raciocínio"; indicador de streaming "Thinking" → "Raciocinando". |
+| Slash command | Comando de barra | Adicionado na Tarefa 8b (picker de comandos do composer: "Comandos", "Comando de barra inválido", etc.). |
+| Tool call | Chamada de ferramenta | Adicionado na Tarefa 8b (resumo de execuções do agente: "3 chamadas de ferramenta"). |
+| Scope (permissão/API) | Escopo | Adicionado na Tarefa 8b (cartão de permissão do chat: "1 escopo" / "2 escopos", "Escopos da API"). Não confundir com "Vendor"/"Connection" já no glossário. |
+| Compaction (context) | Compactação / Compactar | Adicionado na Tarefa 8b (resumo de contexto do chat quando o histórico é compactado: "Contexto compactado", "compactou o contexto", indicador "Compactando…"). |
 
 Se aparecer um termo novo durante a tradução que não está nesta tabela, pare e adicione a decisão aqui antes de seguir — não improvise traduções diferentes para o mesmo termo em arquivos diferentes.
 
