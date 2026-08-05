@@ -4664,7 +4664,7 @@ function ChatInterface({
       try {
         const a = document.createElement("a");
         a.href = url;
-        a.download = name ?? "attachment";
+        a.download = name ?? "anexo";
         a.click();
       } finally {
         setTimeout(() => URL.revokeObjectURL(url), 0);
@@ -6755,7 +6755,7 @@ function ChatInterface({
                   ) : (
                     <>
                       <span className="min-w-0 flex-1 truncate text-[13px] leading-[18px] font-medium tracking-[-0.25px] text-kumo-default">
-                        {currentChatMetadata?.title || "Chat"}
+                        {currentChatMetadata?.title || "Conversa"}
                       </span>
                       <WorkshopIconButton
                         onClick={() => setIsEditingTitle(true)}
