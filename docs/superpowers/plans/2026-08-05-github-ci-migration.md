@@ -109,7 +109,7 @@ Use a YAML parser available in the workspace or inspect the parsed workflow stru
 
 - [ ] **Step 1: Add the security workflow**
 
-Run CodeQL on JavaScript/TypeScript for pull requests, pushes to `main`, and a weekly schedule with least-privilege read/security-event permissions. Dependency review is intentionally omitted until this repository's Dependency Graph is enabled; the action currently fails before analysis when that setting is disabled. Do not expose deploy or R2 secrets to pull-request jobs.
+Run CodeQL on JavaScript/TypeScript for pull requests, pushes to `main`, and a weekly schedule with least-privilege read/security-event permissions. Run dependency review only for pull requests. Do not expose deploy or R2 secrets to pull-request jobs.
 
 - [ ] **Step 2: Add the release-contract workflow**
 
