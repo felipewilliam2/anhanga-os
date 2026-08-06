@@ -614,9 +614,9 @@ export default function AdminPage() {
         <div className="bg-kumo-elevated border border-kumo-line rounded-xl p-6">
           <h2 className="text-lg font-semibold text-kumo-strong mb-1">Banner</h2>
           <p className="text-sm text-kumo-subtle mb-5">
-            Uma barra dispens\u00E1vel no topo do app (logado ou n\u00E3o). Markdown \u00E9 aceito, ent\u00E3o voc\u00EA
-            pode incluir links. Deixe em branco para ocult\u00E1-la. Aplica-se na pr\u00F3xima conex\u00E3o de
-            cada usu\u00E1rio.
+            Uma barra dispensável no topo do app (logado ou não). Markdown é aceito, então você
+            pode incluir links. Deixe em branco para ocultá-la. Aplica-se na próxima conexão de
+            cada usuário.
           </p>
 
           <Textarea
