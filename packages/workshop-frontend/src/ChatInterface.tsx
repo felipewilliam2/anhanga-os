@@ -5080,7 +5080,7 @@ function ChatInterface({
           provisional.compacting = false;
           if (event.nothingToCompact) {
             toastsRef.current.add({
-              title: "Nothing to compact — there are no earlier messages to summarize.",
+              title: "Nada para compactar — não há mensagens anteriores para resumir.",
             });
           }
           break;

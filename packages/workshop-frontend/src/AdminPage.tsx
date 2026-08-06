@@ -10,6 +10,11 @@ import SiteLogo from './components/SiteLogo'
 import { useDocumentTitle } from './useDocumentTitle'
 import AdminFormatsPanel from './components/format/AdminFormatsPanel'
 
+// "N caracteres além do limite" over-length hints: singular "caractere" when N is exactly 1.
+function excessCharsLabel(count: number): string {
+  return `${count} ${count === 1 ? 'caractere' : 'caracteres'} além do limite`
+}
+
 // Preset accent colors offered in the Theme section ('' = default brand).
 const ACCENT_PRESETS: { label: string; value: string }[] = [
   { label: 'Padrão', value: '' },
@@ -628,7 +633,7 @@ export default function AdminPage() {
             maxLength={MAX_ANNOUNCEMENT_LENGTH}
             error={
               bannerTextDraft.length > MAX_ANNOUNCEMENT_LENGTH
-                ? `${bannerTextDraft.length - MAX_ANNOUNCEMENT_LENGTH} caracteres al\u00E9m do limite`
+                ? excessCharsLabel(bannerTextDraft.length - MAX_ANNOUNCEMENT_LENGTH)
                 : undefined
             }
           />
@@ -708,7 +713,7 @@ export default function AdminPage() {
             maxLength={MAX_ANNOUNCEMENT_LENGTH}
             error={
               announcementDraft.length > MAX_ANNOUNCEMENT_LENGTH
-                ? `${announcementDraft.length - MAX_ANNOUNCEMENT_LENGTH} caracteres al\u00e9m do limite`
+                ? excessCharsLabel(announcementDraft.length - MAX_ANNOUNCEMENT_LENGTH)
                 : undefined
             }
           />
@@ -763,7 +768,7 @@ export default function AdminPage() {
           maxLength={MAX_INSTANCE_INSTRUCTIONS_LENGTH}
           error={
             instructionsDraft.length > MAX_INSTANCE_INSTRUCTIONS_LENGTH
-              ? `${instructionsDraft.length - MAX_INSTANCE_INSTRUCTIONS_LENGTH} caracteres além do limite`
+              ? excessCharsLabel(instructionsDraft.length - MAX_INSTANCE_INSTRUCTIONS_LENGTH)
               : undefined
           }
         />

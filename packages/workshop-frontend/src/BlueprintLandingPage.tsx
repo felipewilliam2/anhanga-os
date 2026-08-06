@@ -1621,7 +1621,7 @@ function BlueprintGatekeeperBindingField({
       })
       .catch(err => {
         console.error('Failed to start resource configurator:', err)
-        if (!cancelled) setFrameError(err?.message || 'Could not start configurator.')
+        if (!cancelled) setFrameError(err?.message || 'Não foi possível iniciar o configurador.')
       })
       .finally(() => {
         if (!cancelled) setFrameLoading(false)
