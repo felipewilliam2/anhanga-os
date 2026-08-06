@@ -103,14 +103,27 @@ function firstStackFrame(stack: string | undefined): string {
   })?.trim() ?? ''
 }
 
+let fallbackSessionSequence = 0
+
 function createSessionId(): string {
   try {
     const uuid = globalThis.crypto?.randomUUID?.()
     if (uuid) return uuid
   } catch {
-    // This identifier is only diagnostic, so a non-cryptographic fallback is sufficient.
+    // Try the byte-oriented cryptographic API below when randomUUID is unavailable.
   }
-  return `session-${Date.now().toString(36)}-${Math.random().toString(36).slice(2)}`
+  try {
+    const crypto = globalThis.crypto
+    if (crypto?.getRandomValues) {
+      const bytes = crypto.getRandomValues(new Uint8Array(16))
+      const hex = Array.from(bytes, byte => byte.toString(16).padStart(2, '0')).join('')
+      return `session-${hex}`
+    }
+  } catch {
+    // This identifier is only diagnostic, so a monotonic fallback is sufficient.
+  }
+  const sequence = fallbackSessionSequence++
+  return `session-${Date.now().toString(36)}-${sequence.toString(36)}`
 }
 
 function getSessionId(): string {
