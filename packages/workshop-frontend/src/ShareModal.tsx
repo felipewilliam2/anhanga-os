@@ -55,6 +55,14 @@ const ROLE_LABELS: Record<CollaboratorRole, string> = {
   use: 'Somente gadget',
 }
 
+// Contextual phrasing for "Pessoas com acesso ___ precisam...": ROLE_LABELS above are standalone
+// menu-item labels, not preposition-ready, so interpolating them there reads as broken Portuguese
+// ("acesso Espaço de trabalho precisam").
+const ROLE_ACCESS_PHRASES: Record<CollaboratorRole, string> = {
+  build: 'ao espaço de trabalho',
+  use: 'somente ao gadget',
+}
+
 const ROLE_DESCRIPTIONS: Record<CollaboratorRole, string> = {
   build: 'Editar gadgets, usar o chat e gerenciar acesso.',
   use: 'Usar gadgets sem chat com o agente ou edição.',
@@ -251,7 +259,7 @@ function RecipientVerification({
       <div className="rounded-2xl border border-kumo-line/80 bg-kumo-base px-3 py-2.5">
         <p className="text-[12px] leading-[16px] tracking-[-0.15px] text-kumo-subtle">
           {role ? (
-            <>Pessoas com acesso <span className="font-medium text-kumo-default">{roleLabel(role)}</span> precisam</>
+            <>Pessoas com acesso <span className="font-medium text-kumo-default">{ROLE_ACCESS_PHRASES[role]}</span> precisam</>
           ) : 'Os destinatários precisam'} comprovar que a própria conta consegue acessar:
         </p>
         <ul className="mt-1.5 max-h-32 space-y-1 overflow-y-auto">

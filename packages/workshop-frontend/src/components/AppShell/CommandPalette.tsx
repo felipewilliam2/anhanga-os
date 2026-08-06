@@ -227,7 +227,7 @@ export default function CommandPalette({
     // general starting point; the format shortcuts follow it in the admin's configured order.
     const formatCommands: Command[] = formats.map((format) => ({
       id: `format-${format.blueprintId}`,
-      label: `Novo ${format.output.noun}`,
+      label: `Criar ${format.output.noun}`,
       hint: 'Formato',
       icon: <FormatGlyph output={format.output} size="md" />,
       run: () => { void createFormat(format) },

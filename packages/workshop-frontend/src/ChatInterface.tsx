@@ -173,7 +173,7 @@ function CreatedGadgetChatCard({
               )}
               <span>
                 {gadget.isPending
-                    ? `Novo ${formatOf(gadget.output).noun.toLowerCase()} · Clique para pré-visualizar`
+                    ? `Criar ${formatOf(gadget.output).noun.toLowerCase()} · Clique para pré-visualizar`
                     : `${formatOf(gadget.output).noun} · Clique para abrir`}
               </span>
             </span>

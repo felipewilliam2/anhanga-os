@@ -261,9 +261,9 @@ function ScopeSelect({
   // of the other two. Anything shorter ("Anyone", "All") reads as a directory of other people,
   // when nothing here is reachable without having made it or been given access.
   const options: { value: OwnerFilter; label: string }[] = [
-    { value: 'all', label: 'Seus e compartilhados' },
-    { value: 'mine', label: 'Criados por você' },
-    { value: 'shared', label: 'Compartilhados com você' },
+    { value: 'all', label: 'Suas e compartilhadas' },
+    { value: 'mine', label: 'Criadas por você' },
+    { value: 'shared', label: 'Compartilhadas com você' },
   ]
   const current = options.find((o) => o.value === value)!
   const CurrentIcon = SCOPE_ICON[value]

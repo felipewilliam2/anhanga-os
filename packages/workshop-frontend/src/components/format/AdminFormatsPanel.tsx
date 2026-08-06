@@ -255,7 +255,7 @@ function FormatRow({
           <span className="min-w-0 flex-1">
             <span className="flex items-center gap-2">
               <span className="truncate text-sm font-medium text-kumo-default">
-                {format.output ? `Novo ${format.output.noun}` : format.blueprintTitle || format.blueprintId}
+                {format.output ? `Criar ${format.output.noun}` : format.blueprintTitle || format.blueprintId}
               </span>
               {format.bundled && <Badge>Incluído</Badge>}
               {!format.enabled && !format.missing && <Badge>Desligado</Badge>}
@@ -372,13 +372,16 @@ function FormatRow({
                 />
                 {/* The literal catalog entry, including the blueprint's own description: the hint is
                     only its last line, and showing the label alone made an empty hint look like the
-                    agent had been told nothing. Mirrors #listStandardFormats in overseer.ts. */}
+                    agent had been told nothing. Mirrors #listStandardFormats in overseer.ts — kept
+                    in English (not translated with the rest of the UI) because this is a preview of
+                    what the agent literally receives, which is backend-generated English text; a
+                    translated preview would mislead admins tuning agentHint. */}
                 {format.output && (
                   <p className="mt-2 flex items-start gap-1.5 rounded-md bg-kumo-tint/60 px-2.5 py-2 font-mono text-[11px] leading-4 text-kumo-subtle">
                     <Sparkle size={12} className="mt-0.5 shrink-0" />
                     <span className="min-w-0">
                       <span className="block">
-                        “{format.output.noun}” — um formato padrão nesta implantação
+                        “{format.output.noun}” — a standard format on this deployment
                         {format.agentHint ? ` -- ${format.agentHint}` : ''}
                       </span>
                       {format.blueprintDescription && (
