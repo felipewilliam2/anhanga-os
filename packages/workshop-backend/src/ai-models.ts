@@ -329,7 +329,7 @@ function makeHandle(args: HandleArgs): ModelHandle {
           const replaced = await options.onPayload?.(payload, payloadModel);
           return bridgePdfAttachments(args.model.api, replaced ?? payload) ?? replaced;
         },
-        fetch: workerFetch,
+        fetch: options.fetch ?? workerFetch,
         // NOTE(binding-transport): pi passes `options.fetch` into its SDK clients on all paths.
         // If Workers-binding-backed inference returns (upstream ask filed), inject a
         // fetch-to-binding shim here and relax the token requirements in ai-gateway.ts.
