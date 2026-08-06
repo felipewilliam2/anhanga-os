@@ -408,7 +408,7 @@ export default function ShareModal({ open, onClose, overseer, metadata, currentU
       return { collaborators: collabs, shareLinks: keys }
     } catch (err) {
       console.error('Failed to load share data:', err)
-      toasts.add({ title: 'Failed to load sharing info', variant: 'error' })
+      toasts.add({ title: 'Falha ao carregar informações de compartilhamento', variant: 'error' })
       return null
     }
   }, [overseer])

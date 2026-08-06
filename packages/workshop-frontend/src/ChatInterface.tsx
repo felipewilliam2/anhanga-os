@@ -120,6 +120,7 @@ import { useVendorBranding } from "./useVendorBranding";
 import OutOfCreditsModal from "./components/billing/OutOfCreditsModal";
 import { useSlashCommandPicker } from "./components/chat/SlashCommandPicker";
 import { formatFullTimestamp } from "./utils/formatTimestamp";
+import { formatUsdCost } from "./utils/formatCurrency";
 import { copyToClipboard } from "./clipboard";
 
 export interface StreamingProposedChanges {
@@ -366,7 +367,7 @@ const CHAT_ATTACHMENT_IMAGE_MAX_EDGE = 1568;
 
 function canvasToBlob(canvas: HTMLCanvasElement, type: string, quality?: number): Promise<Blob> {
   return new Promise((resolve, reject) => {
-    canvas.toBlob((blob) => blob ? resolve(blob) : reject(new Error("Failed to encode image.")), type, quality);
+    canvas.toBlob((blob) => blob ? resolve(blob) : reject(new Error("Falha ao codificar a imagem.")), type, quality);
   });
 }
 
@@ -6560,7 +6561,7 @@ function ChatInterface({
                           <>
                             <span className="flex-shrink-0" aria-hidden="true">·</span>
                             <span className="flex-shrink-0 font-mono">
-                              ${chat.totalCost.toFixed(4)}
+                              {formatUsdCost(chat.totalCost)}
                             </span>
                           </>
                         )}
@@ -7673,7 +7674,7 @@ function ChatInterface({
                       </span>
                     )}
                     {currentChatMetadata?.totalCost != null && (
-                      <span>${currentChatMetadata.totalCost.toFixed(4)}</span>
+                      <span>{formatUsdCost(currentChatMetadata.totalCost)}</span>
                     )}
                   </div>
                 </div>
