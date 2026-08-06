@@ -1746,7 +1746,7 @@ const ToolGroupRow = memo(function ToolGroupRow({
           </Tooltip>
           <Tooltip content={formatFullTimestamp(footerTimestamp)} asChild>
             <span className="px-1 font-mono text-[11px] leading-4 text-kumo-inactive">
-              {footerTimestamp.toLocaleTimeString([], {
+              {footerTimestamp.toLocaleTimeString('pt-BR', {
                 hour: "2-digit",
                 minute: "2-digit",
               })}
@@ -4094,17 +4094,17 @@ function getChatTimeBucket(date: Date, now: Date): ChatTimeBucket {
 // own the "date" half of the label (via the section header), so rows only show
 // what the header doesn't.
 function formatChatRowTime(date: Date, bucket: ChatTimeBucket, now: Date): string {
-  const time = date.toLocaleTimeString([], { hour: "numeric", minute: "2-digit" });
+  const time = date.toLocaleTimeString('pt-BR', { hour: "numeric", minute: "2-digit" });
   if (bucket === "today" || bucket === "yesterday") {
     return time;
   }
   if (bucket === "thisWeek") {
-    const day = date.toLocaleDateString([], { weekday: "short" });
+    const day = date.toLocaleDateString('pt-BR', { weekday: "short" });
     return `${day} ${time}`;
   }
   const sameYear = date.getFullYear() === now.getFullYear();
   return date.toLocaleDateString(
-    [],
+    'pt-BR',
     sameYear
       ? { month: "short", day: "numeric" }
       : { month: "short", day: "numeric", year: "numeric" },
@@ -6949,7 +6949,7 @@ function ChatInterface({
                                 </Tooltip>
                                 <Tooltip content={formatFullTimestamp(entry.message.timestamp)} asChild>
                                   <span className="px-1 font-mono text-[11px] leading-4 text-kumo-inactive">
-                                    {entry.message.timestamp.toLocaleTimeString([], {
+                                    {entry.message.timestamp.toLocaleTimeString('pt-BR', {
                                       hour: "2-digit",
                                       minute: "2-digit",
                                     })}
@@ -7036,7 +7036,7 @@ function ChatInterface({
                               )}
                               <Tooltip content={formatFullTimestamp(msg.timestamp)} asChild>
                                 <span className="font-mono">
-                                  {msg.timestamp.toLocaleTimeString([], {
+                                  {msg.timestamp.toLocaleTimeString('pt-BR', {
                                     hour: "2-digit",
                                     minute: "2-digit",
                                   })}
@@ -7086,7 +7086,7 @@ function ChatInterface({
                                 )}
                                 <Tooltip content={formatFullTimestamp(msg.timestamp)} asChild>
                                   <span className="font-mono">
-                                    {msg.timestamp.toLocaleTimeString([], {
+                                    {msg.timestamp.toLocaleTimeString('pt-BR', {
                                       hour: "2-digit",
                                       minute: "2-digit",
                                     })}
@@ -7173,7 +7173,7 @@ function ChatInterface({
                                   })()}
                                   <Tooltip content={formatFullTimestamp(msg.timestamp)} asChild>
                                     <span className="px-1 font-mono text-[11px] leading-4 text-kumo-inactive">
-                                      {msg.timestamp.toLocaleTimeString([], {
+                                      {msg.timestamp.toLocaleTimeString('pt-BR', {
                                         hour: "2-digit",
                                         minute: "2-digit",
                                       })}
@@ -7244,7 +7244,7 @@ function ChatInterface({
                                   content={
                                     isMerge
                                       ? `Alterações do rascunho aceitas${ts ? ` até ${formatFullTimestamp(ts)}` : ""}.`
-                                      : `Retornou ao estado do gadget anterior ao prompt enviado ${ts ? `às ${ts.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}` : "anteriormente"}.`
+                                      : `Retornou ao estado do gadget anterior ao prompt enviado ${ts ? `às ${ts.toLocaleTimeString('pt-BR', { hour: "2-digit", minute: "2-digit" })}` : "anteriormente"}.`
                                   }
                                   asChild
                                 >

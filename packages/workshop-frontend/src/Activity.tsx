@@ -46,11 +46,11 @@ function timeValue(date: Date | undefined): number {
 }
 
 function formatClockTime(date: Date): string {
-  return new Date(date).toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' })
+  return new Date(date).toLocaleTimeString('pt-BR', { hour: 'numeric', minute: '2-digit' })
 }
 
 function formatFullDate(date: Date): string {
-  return new Date(date).toLocaleString([], {
+  return new Date(date).toLocaleString('pt-BR', {
     month: 'short',
     day: 'numeric',
     hour: 'numeric',
@@ -76,7 +76,7 @@ function dayLabel(date: Date): string {
   const days = Math.round((startOfDay(new Date()) - startOfDay(value)) / 86_400_000)
   if (days === 0) return 'Hoje'
   if (days === 1) return 'Ontem'
-  return value.toLocaleDateString([], { month: 'long', day: 'numeric', year: 'numeric' })
+  return value.toLocaleDateString('pt-BR', { month: 'long', day: 'numeric', year: 'numeric' })
 }
 
 function activityStatus(
