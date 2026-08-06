@@ -7669,7 +7669,7 @@ function ChatInterface({
                   <div className="-mt-1 flex min-h-[1.25rem] items-start justify-end gap-4 px-4 pb-1 font-mono text-[11px] leading-4 text-kumo-inactive">
                     {currentChatMetadata?.totalTokens != null && (
                       <span>
-                        {currentChatMetadata.totalTokens.toLocaleString()} tokens
+                        {currentChatMetadata.totalTokens.toLocaleString('pt-BR')} tokens
                       </span>
                     )}
                     {currentChatMetadata?.totalCost != null && (

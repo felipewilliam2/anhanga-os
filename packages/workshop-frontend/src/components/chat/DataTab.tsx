@@ -73,7 +73,7 @@ export default function DataTab() {
                 </Table.Cell>
                 <Table.Cell>
                   <span className="text-sm text-kumo-subtle tabular-nums">
-                    {row.messages.toLocaleString()}
+                    {row.messages.toLocaleString('pt-BR')}
                   </span>
                 </Table.Cell>
                 <Table.Cell>
@@ -98,7 +98,7 @@ export default function DataTab() {
           {sampleDataRows.length} linhas em channels
         </span>
         <span className="font-mono text-xs text-kumo-subtle">
-          {sampleDataRows.reduce((sum, r) => sum + r.messages, 0).toLocaleString()} mensagens no total
+          {sampleDataRows.reduce((sum, r) => sum + r.messages, 0).toLocaleString('pt-BR')} mensagens no total
         </span>
       </div>
     </div>

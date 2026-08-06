@@ -715,7 +715,7 @@ export default function AdminPage() {
 
           <div className="flex items-center justify-between mt-3">
             <span className="text-xs text-kumo-subtle">
-              {announcementDraft.length.toLocaleString()} / {MAX_ANNOUNCEMENT_LENGTH.toLocaleString()} caracteres
+              {announcementDraft.length.toLocaleString('pt-BR')} / {MAX_ANNOUNCEMENT_LENGTH.toLocaleString('pt-BR')} caracteres
             </span>
             <div className="flex items-center gap-2">
               {announcementDraft !== savedAnnouncement && (
@@ -770,7 +770,7 @@ export default function AdminPage() {
 
         <div className="flex items-center justify-between mt-3">
           <span className="text-xs text-kumo-subtle">
-            {instructionsDraft.length.toLocaleString()} / {MAX_INSTANCE_INSTRUCTIONS_LENGTH.toLocaleString()} caracteres
+            {instructionsDraft.length.toLocaleString('pt-BR')} / {MAX_INSTANCE_INSTRUCTIONS_LENGTH.toLocaleString('pt-BR')} caracteres
           </span>
           <div className="flex items-center gap-2">
             {instructionsDraft !== savedInstructions && (

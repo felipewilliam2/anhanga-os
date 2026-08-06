@@ -47,7 +47,7 @@ function formatRelativeTime(date: Date): string {
   if (diffMinutes < 60) return `há ${diffMinutes}m`
   if (diffHours < 24) return `há ${diffHours}h`
   if (diffDays < 7) return `há ${diffDays}d`
-  return date.toLocaleDateString()
+  return date.toLocaleDateString('pt-BR')
 }
 
 const ROLE_LABELS: Record<CollaboratorRole, string> = {

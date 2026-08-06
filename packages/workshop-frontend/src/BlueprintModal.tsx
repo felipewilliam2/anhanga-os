@@ -642,7 +642,7 @@ function BlueprintRow({
               aria-hidden="true"
             />
           )}
-          v{bp.version} · {new Date(bp.codeVersionDate).toLocaleDateString()}
+          v{bp.version} · {new Date(bp.codeVersionDate).toLocaleDateString('pt-BR')}
         </span>
       </div>
 

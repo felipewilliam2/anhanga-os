@@ -823,7 +823,7 @@ export default function BlueprintLandingPage({ rpcStub }: Props) {
               <span className="text-kumo-inactive">•</span>
               <span>v{meta.version}</span>
               <span className="text-kumo-inactive">•</span>
-              <span>Atualizado em {new Date(meta.lastUpdated).toLocaleDateString()}</span>
+              <span>Atualizado em {new Date(meta.lastUpdated).toLocaleDateString('pt-BR')}</span>
             </div>
           </div>
 

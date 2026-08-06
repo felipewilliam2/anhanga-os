@@ -440,13 +440,13 @@ export default function GadgetList({ showHeader = true }: { showHeader?: boolean
             <div className="flex justify-between">
               <span className="text-kumo-subtle">Criado em</span>
               <span className="text-kumo-default">
-                {infoTarget?.created?.toLocaleString()}
+                {infoTarget?.created?.toLocaleString('pt-BR')}
               </span>
             </div>
             <div className="flex justify-between">
               <span className="text-kumo-subtle">Última atividade</span>
               <span className="text-kumo-default">
-                {infoTarget?.lastActive?.toLocaleString()}
+                {infoTarget?.lastActive?.toLocaleString('pt-BR')}
               </span>
             </div>
           </div>
