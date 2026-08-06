@@ -15,12 +15,12 @@
   },
   "dependencies": {
     "@gadgets/workshop-shared": "workspace:*",
-    "capnweb": "^0.8.0",
+    "capnweb": "^0.10.0",
     "jsonc-parser": "^3.3.1",
     "zod": "^4.4.3"
   },
   "devDependencies": {
-    "@cloudflare/workers-types": "^4.20260623.1",
+    "@cloudflare/workers-types": "^5.20260801.1",
     "@types/node": "^26.1.0",
     "typescript": "^5.9.3",
     "vitest": "^3.2.4",

@@ -24,9 +24,9 @@
     "@gadgets/error-reporting": "workspace:*",
     "@gadgets/typed-storage": "workspace:*",
     "@gadgets/workshop-shared": "workspace:*",
-    "capnweb": "^0.8.0",
+    "capnweb": "^0.10.0",
     "capnweb-validate": "0.2.1",
-    "diff": "^8.0.4",
+    "diff": "^9.0.0",
     "jose": "^6.2.5",
     "yjs": "^13.6.31"
   },
