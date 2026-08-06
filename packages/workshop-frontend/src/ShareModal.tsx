@@ -43,25 +43,49 @@ function formatRelativeTime(date: Date): string {
   const diffHours = Math.floor(diffMinutes / 60)
   const diffDays = Math.floor(diffHours / 24)
 
-  if (diffSeconds < 60) return 'just now'
-  if (diffMinutes < 60) return `${diffMinutes}m ago`
-  if (diffHours < 24) return `${diffHours}h ago`
-  if (diffDays < 7) return `${diffDays}d ago`
-  return date.toLocaleDateString()
+  if (diffSeconds < 60) return 'agora mesmo'
+  if (diffMinutes < 60) return `há ${diffMinutes}m`
+  if (diffHours < 24) return `há ${diffHours}h`
+  if (diffDays < 7) return `há ${diffDays}d`
+  return date.toLocaleDateString('pt-BR')
 }
 
 const ROLE_LABELS: Record<CollaboratorRole, string> = {
-  build: 'Workspace',
-  use: 'Gadget only',
+  build: 'Espaço de trabalho',
+  use: 'Somente gadget',
+}
+
+// Contextual phrasing for "Pessoas com acesso ___ precisam...": ROLE_LABELS above are standalone
+// menu-item labels, not preposition-ready, so interpolating them there reads as broken Portuguese
+// ("acesso Espaço de trabalho precisam").
+const ROLE_ACCESS_PHRASES: Record<CollaboratorRole, string> = {
+  build: 'ao espaço de trabalho',
+  use: 'somente ao gadget',
 }
 
 const ROLE_DESCRIPTIONS: Record<CollaboratorRole, string> = {
-  build: 'Edit gadgets, use chat, and manage access.',
-  use: 'Use gadgets without agent chat or editing.',
+  build: 'Editar gadgets, usar o chat e gerenciar acesso.',
+  use: 'Usar gadgets sem chat com o agente ou edição.',
 }
 
 function roleLabel(role: CollaboratorRole | undefined): string {
   return ROLE_LABELS[role ?? 'build']
+}
+
+// workshop-backend's addCollaborator() (sharing.ts) throws plain English Error messages, out of
+// this pt-BR pass's declared scope (translating ~250 backend error strings needs its own
+// error-code architecture). These two are the only errors reachable from this specific call site,
+// though, and both are ordinary user mistakes (self-inviting, or granting a role above your own),
+// so map them here rather than surface raw English in an otherwise pt-BR modal.
+function translateAddCollaboratorError(err: unknown): string {
+  const message = err instanceof Error ? err.message : undefined
+  if (message === 'Cannot add the workspace owner as a collaborator.') {
+    return 'Não é possível adicionar o dono do espaço de trabalho como colaborador.'
+  }
+  if (message === 'You cannot grant a role higher than your own.') {
+    return 'Você não pode conceder um papel superior ao seu.'
+  }
+  return message || 'Falha ao adicionar colaborador.'
 }
 
 const ROLE_OPTIONS: CollaboratorRole[] = ['build', 'use']
@@ -170,7 +194,7 @@ function InlineConfirm({
         type="button"
         onClick={onCancel}
         disabled={busy}
-        aria-label="Cancel"
+        aria-label="Cancelar"
         className="grid h-7 w-7 cursor-pointer place-items-center rounded-lg text-kumo-inactive transition-[background-color,color,transform] duration-150 ease-out hover:bg-kumo-tint hover:text-kumo-default active:scale-[0.96] disabled:opacity-60"
       >
         <X size={14} />
@@ -240,7 +264,7 @@ function RecipientVerification({
   if (failed) {
     body = (
       <p className="px-1 text-[12px] leading-[16px] tracking-[-0.15px] text-kumo-subtle">
-        Couldn’t check which connections recipients will be asked to verify.
+        Não foi possível verificar quais conexões os destinatários precisarão confirmar.
       </p>
     )
   } else if (requirements === null || requirements.length === 0) {
@@ -251,8 +275,8 @@ function RecipientVerification({
       <div className="rounded-2xl border border-kumo-line/80 bg-kumo-base px-3 py-2.5">
         <p className="text-[12px] leading-[16px] tracking-[-0.15px] text-kumo-subtle">
           {role ? (
-            <>People with <span className="font-medium text-kumo-default">{roleLabel(role)}</span> access must</>
-          ) : 'Recipients must'} prove their own account can reach:
+            <>Pessoas com acesso <span className="font-medium text-kumo-default">{ROLE_ACCESS_PHRASES[role]}</span> precisam</>
+          ) : 'Os destinatários precisam'} comprovar que a própria conta consegue acessar:
         </p>
         <ul className="mt-1.5 max-h-32 space-y-1 overflow-y-auto">
           {requirements.map(requirement => (
@@ -384,7 +408,7 @@ export default function ShareModal({ open, onClose, overseer, metadata, currentU
       return { collaborators: collabs, shareLinks: keys }
     } catch (err) {
       console.error('Failed to load share data:', err)
-      toasts.add({ title: 'Failed to load sharing info', variant: 'error' })
+      toasts.add({ title: 'Falha ao carregar informações de compartilhamento', variant: 'error' })
       return null
     }
   }, [overseer])
@@ -462,7 +486,7 @@ export default function ShareModal({ open, onClose, overseer, metadata, currentU
         requirements={null}
         failed
         headingId="recipient-verification-heading"
-        heading="Recipient verification"
+        heading="Verificação de destinatários"
       />
     )
   } else if (requirements !== null) {
@@ -474,7 +498,7 @@ export default function ShareModal({ open, onClose, overseer, metadata, currentU
           failed={false}
           role={addRole}
           headingId="recipient-verification-heading"
-          heading="Recipient verification"
+          heading="Verificação de destinatários"
         />
       )
     } else {
@@ -486,7 +510,7 @@ export default function ShareModal({ open, onClose, overseer, metadata, currentU
             failed={false}
             role={addRole === newLinkRole ? addRole : undefined}
             headingId="recipient-verification-heading"
-            heading="Recipient verification"
+            heading="Verificação de destinatários"
           />
         )
       } else {
@@ -497,14 +521,14 @@ export default function ShareModal({ open, onClose, overseer, metadata, currentU
               failed={false}
               role={addRole}
               headingId="invite-verification-heading"
-              heading="Direct invite verification"
+              heading="Verificação de convite direto"
             />
             <RecipientVerification
               requirements={linkRequirements}
               failed={false}
               role={newLinkRole}
               headingId="link-verification-heading"
-              heading="Share-link verification"
+              heading="Verificação do link de compartilhamento"
             />
           </>
         )
@@ -515,12 +539,12 @@ export default function ShareModal({ open, onClose, overseer, metadata, currentU
   const revokeTarget = confirmationTarget?.kind === 'revoke' ? confirmationTarget : null
 
   const describeAccess = (info: CollaboratorInfo): string => {
-    if (info.addedBy.length > 1) return `Access from ${info.addedBy.length} sources`
+    if (info.addedBy.length > 1) return `Acesso de ${info.addedBy.length} fontes`
     const edge = info.addedBy[0]
-    if (!edge) return 'Collaborator'
-    if (edge.type === 'user') return `Added directly by ${edge.sharer}`
+    if (!edge) return 'Colaborador'
+    if (edge.type === 'user') return `Adicionado diretamente por ${edge.sharer}`
     const key = shareLinks.find(item => item.linkId === edge.keyId)
-    return key?.note ? `Joined through “${key.note}”` : 'Joined through a share link'
+    return key?.note ? `Entrou por meio de "${key.note}"` : 'Entrou por meio de um link de compartilhamento'
   }
 
   const copyNewLink = async () => {
@@ -529,7 +553,7 @@ export default function ShareModal({ open, onClose, overseer, metadata, currentU
     if (copied) {
       setNewShareLinkCopied(true)
     } else {
-      toasts.add({ title: 'Could not copy share link.', variant: 'error' })
+      toasts.add({ title: 'Não foi possível copiar o link de compartilhamento.', variant: 'error' })
     }
   }
 
@@ -541,7 +565,7 @@ export default function ShareModal({ open, onClose, overseer, metadata, currentU
     if (await copyToClipboard(workspaceUrl)) {
       setInvitedLinkCopied(true)
     } else {
-      toasts.add({ title: 'Could not copy the workspace link.', variant: 'error' })
+      toasts.add({ title: 'Não foi possível copiar o link do espaço de trabalho.', variant: 'error' })
     }
   }
 
@@ -565,7 +589,7 @@ export default function ShareModal({ open, onClose, overseer, metadata, currentU
     try {
       const result = await overseer.addCollaborator(username, addRole, undefined)
       if (result === null) {
-        toasts.add({ title: 'No account found for that username.', variant: 'error' })
+        toasts.add({ title: 'Nenhuma conta encontrada para esse nome de usuário.', variant: 'error' })
       } else {
         const landedId = result.profile.id
         setAddUsername('')
@@ -573,10 +597,10 @@ export default function ShareModal({ open, onClose, overseer, metadata, currentU
         setInvitedLinkCopied(false)
         await loadData()
         showLandedRow('person', landedId)
-        toasts.add({ title: `Added ${result.profile.name} as a collaborator.`, variant: 'success' })
+        toasts.add({ title: `${result.profile.name} adicionado(a) como colaborador(a).`, variant: 'success' })
       }
     } catch (err: any) {
-      toasts.add({ title: err.message || 'Failed to add collaborator.', variant: 'error' })
+      toasts.add({ title: translateAddCollaboratorError(err), variant: 'error' })
     } finally {
       addingRef.current = false
       setAdding(false)
@@ -600,7 +624,7 @@ export default function ShareModal({ open, onClose, overseer, metadata, currentU
       showLandedRow('shareLink', linkId)
     } catch (err: any) {
       // Keep the composer and its values open so the user can retry without re-entering them.
-      toasts.add({ title: err.message || 'Failed to create share link.', variant: 'error' })
+      toasts.add({ title: err.message || 'Falha ao criar link de compartilhamento.', variant: 'error' })
     } finally {
       creatingLinkRef.current = false
       setCreatingLink(false)
@@ -623,7 +647,7 @@ export default function ShareModal({ open, onClose, overseer, metadata, currentU
       }
       const copied = await copyToClipboard(url)
       if (!copied) {
-        toasts.add({ title: 'Could not copy share link.', variant: 'error' })
+        toasts.add({ title: 'Não foi possível copiar o link de compartilhamento.', variant: 'error' })
         return
       }
       setCopiedLinkId(linkId)
@@ -633,9 +657,9 @@ export default function ShareModal({ open, onClose, overseer, metadata, currentU
         setCopiedLinkId(current => (current === linkId ? null : current))
         copiedTimerRef.current = null
       }, 2000)
-      toasts.add({ title: 'Link copied to clipboard.', variant: 'success' })
+      toasts.add({ title: 'Link copiado para a área de transferência.', variant: 'success' })
     } catch (err: any) {
-      toasts.add({ title: err.message || 'Failed to copy share link.', variant: 'error' })
+      toasts.add({ title: err.message || 'Falha ao copiar link de compartilhamento.', variant: 'error' })
     } finally {
       copyingLinkRef.current = false
       setCopyingLinkId(null)
@@ -651,7 +675,7 @@ export default function ShareModal({ open, onClose, overseer, metadata, currentU
         : current)
     } catch (err: any) {
       setConfirmationTarget(current => current?.kind === 'remove' && current.profileId === profileId ? null : current)
-      toasts.add({ title: err.message || 'Failed to preview collaborator removal.', variant: 'error' })
+      toasts.add({ title: err.message || 'Falha ao pré-visualizar remoção de colaborador.', variant: 'error' })
     }
   }
 
@@ -663,13 +687,13 @@ export default function ShareModal({ open, onClose, overseer, metadata, currentU
       setConfirmationTarget(null)
       toasts.add({
         title: removed.length > 0
-          ? 'Collaborator removed.'
-          : 'Your direct grant was removed. This collaborator still has access through another source.',
+          ? 'Colaborador removido.'
+          : 'Sua concessão direta foi removida. Este colaborador ainda tem acesso por outra fonte.',
         variant: 'success',
       })
       await loadData()
     } catch (err: any) {
-      toasts.add({ title: err.message || 'Failed to remove collaborator.', variant: 'error' })
+      toasts.add({ title: err.message || 'Falha ao remover colaborador.', variant: 'error' })
     } finally {
       setConfirmationBusy(false)
     }
@@ -702,9 +726,9 @@ export default function ShareModal({ open, onClose, overseer, metadata, currentU
       cancelRenameShareLink()
       await loadData()
       showLandedRow('shareLink', linkId)
-      toasts.add({ title: 'Share link renamed.', variant: 'success' })
+      toasts.add({ title: 'Link de compartilhamento renomeado.', variant: 'success' })
     } catch (err: any) {
-      toasts.add({ title: err.message || 'Failed to rename share link.', variant: 'error' })
+      toasts.add({ title: err.message || 'Falha ao renomear link de compartilhamento.', variant: 'error' })
     } finally {
       savingShareLinkNoteRef.current = false
       setSavingShareLinkNote(false)
@@ -721,7 +745,7 @@ export default function ShareModal({ open, onClose, overseer, metadata, currentU
         : current)
     } catch (err: any) {
       setConfirmationTarget(current => current?.kind === 'revoke' && current.linkId === linkId ? null : current)
-      toasts.add({ title: err.message || 'Failed to preview share-link revocation.', variant: 'error' })
+      toasts.add({ title: err.message || 'Falha ao pré-visualizar revogação do link de compartilhamento.', variant: 'error' })
     }
   }
 
@@ -737,10 +761,10 @@ export default function ShareModal({ open, onClose, overseer, metadata, currentU
         setNewShareLinkCopied(false)
         setShowLinkComposer(false)
       }
-      toasts.add({ title: 'Share link revoked.', variant: 'success' })
+      toasts.add({ title: 'Link de compartilhamento revogado.', variant: 'success' })
       await loadData()
     } catch (err: any) {
-      toasts.add({ title: err.message || 'Failed to revoke share link.', variant: 'error' })
+      toasts.add({ title: err.message || 'Falha ao revogar link de compartilhamento.', variant: 'error' })
     } finally {
       setConfirmationBusy(false)
     }
@@ -755,15 +779,15 @@ export default function ShareModal({ open, onClose, overseer, metadata, currentU
         <div className="flex shrink-0 items-start justify-between gap-4 overflow-hidden px-4 pb-4 pt-5 sm:px-6 sm:pt-6">
           <div className="min-w-0">
             <Dialog.Title className="truncate text-[18px] leading-6 font-medium tracking-[-0.4px] text-kumo-default">
-              Share “{metadata.title}”
+              Compartilhar "{metadata.title}"
             </Dialog.Title>
             <Dialog.Description className="mt-1 text-[13px] leading-[18px] tracking-[-0.25px] text-kumo-subtle">
-              Invite people or share a link.
+              Convide pessoas ou compartilhe um link.
             </Dialog.Description>
           </div>
           <Dialog.Close
             render={(props) => (
-              <WorkshopIconButton {...props} aria-label="Close">
+              <WorkshopIconButton {...props} aria-label="Fechar">
                 <X size={18} />
               </WorkshopIconButton>
             )}
@@ -780,13 +804,13 @@ export default function ShareModal({ open, onClose, overseer, metadata, currentU
                 <ShieldWarning size={22} weight="duotone" />
               </div>
               <p className="mt-3 text-[14px] leading-5 font-medium tracking-[-0.3px] text-kumo-default">
-                This workspace can’t be shared
+                Este espaço de trabalho não pode ser compartilhado
               </p>
               <p className="mt-1.5 max-w-[320px] text-balance text-[12px] leading-[18px] tracking-[-0.1px] text-kumo-subtle">
-                It has observed sensitive data that can only be accessed by you, the owner.
+                Ele observou dados sensíveis que só podem ser acessados por você, o proprietário.
               </p>
               <p className="mt-2 max-w-[320px] text-balance text-[12px] leading-[18px] tracking-[-0.1px] text-kumo-subtle">
-                To share something similar, create a blueprint from a gadget in this workspace, then use it to create a new workspace.
+                Para compartilhar algo semelhante, crie um template a partir de um gadget deste espaço de trabalho e use-o para criar um novo espaço de trabalho.
               </p>
             </div>
           ) : (
@@ -804,8 +828,8 @@ export default function ShareModal({ open, onClose, overseer, metadata, currentU
             </div>
             <input
               type="search"
-              placeholder="Username or email"
-              aria-label="Username or email"
+              placeholder="Usuário ou e-mail"
+              aria-label="Usuário ou e-mail"
               value={addUsername}
               onChange={(e) => setAddUsername(e.target.value)}
               onKeyDown={(e) => { if (e.key === 'Enter') handleAddCollaborator() }}
@@ -823,7 +847,7 @@ export default function ShareModal({ open, onClose, overseer, metadata, currentU
               disabled={sharingProhibited}
             />
             <RoleMenu
-              ariaLabel="Access to grant"
+              ariaLabel="Acesso a conceder"
               value={addRole}
               onValueChange={setAddRole}
               disabled={sharingProhibited}
@@ -835,7 +859,7 @@ export default function ShareModal({ open, onClose, overseer, metadata, currentU
               onClick={handleAddCollaborator}
               disabled={!addUsername.trim() || adding || sharingProhibited}
             >
-              {adding ? 'Inviting…' : 'Invite'}
+              {adding ? 'Convidando…' : 'Convidar'}
             </WorkshopButton>
           </div>
 
@@ -847,20 +871,20 @@ export default function ShareModal({ open, onClose, overseer, metadata, currentU
               <div className="min-w-[160px] flex-1">
                 <div className="flex items-baseline gap-1.5">
                   <p className="text-[13px] leading-[18px] font-medium text-kumo-default">
-                    Added {invitedName}
+                    {invitedName} adicionado(a)
                   </p>
                   <span className="text-[11px] leading-4 text-kumo-inactive">
-                    {invitedLinkCopied ? 'Link copied to your clipboard' : 'Send them this link to open it'}
+                    {invitedLinkCopied ? 'Link copiado para sua área de transferência' : 'Envie este link para a pessoa abrir'}
                   </span>
                 </div>
                 <p className="truncate font-mono text-[11px] leading-4 text-kumo-subtle">{workspaceUrl}</p>
               </div>
               <WorkshopButton tone="primary" onClick={copyWorkspaceUrl} className="gap-1.5 !rounded-xl">
                 {invitedLinkCopied ? <Check size={13} weight="bold" /> : <Copy size={13} />}
-                {invitedLinkCopied ? 'Copied' : 'Copy link'}
+                {invitedLinkCopied ? 'Copiado' : 'Copiar link'}
               </WorkshopButton>
               <WorkshopIconButton
-                aria-label="Dismiss added collaborator"
+                aria-label="Dispensar colaborador adicionado"
                 onClick={() => { setInvitedName(null); setInvitedLinkCopied(false) }}
               >
                 <X size={14} />
@@ -878,20 +902,20 @@ export default function ShareModal({ open, onClose, overseer, metadata, currentU
                     <div className="min-w-[160px] flex-1">
                       <div className="flex items-baseline gap-1.5">
                         <p className="text-[13px] leading-[18px] font-medium text-kumo-default">
-                          {newShareLinkCopied ? 'Link copied' : 'Link ready'}
+                          {newShareLinkCopied ? 'Link copiado' : 'Link pronto'}
                         </p>
                         <span className="text-[11px] leading-4 text-kumo-inactive">
-                          You can copy it again anytime from Share links
+                          Você pode copiá-lo novamente quando quiser em Links de compartilhamento
                         </span>
                       </div>
                       <p className="truncate font-mono text-[11px] leading-4 text-kumo-subtle">{newShareLink}</p>
                     </div>
                     <WorkshopButton tone="primary" onClick={copyNewLink} className="w-[78px] gap-1.5 !rounded-xl">
                       {newShareLinkCopied ? <Check size={13} weight="bold" /> : <Copy size={13} />}
-                      {newShareLinkCopied ? 'Copied' : 'Copy'}
+                      {newShareLinkCopied ? 'Copiado' : 'Copiar'}
                     </WorkshopButton>
                     <WorkshopIconButton
-                      aria-label="Dismiss created link"
+                      aria-label="Dispensar link criado"
                       onClick={() => { setNewShareLink(null); setNewShareLinkId(null); setNewShareLinkCopied(false); setShowLinkComposer(false) }}
                     >
                       <X size={14} />
@@ -907,22 +931,22 @@ export default function ShareModal({ open, onClose, overseer, metadata, currentU
                       value={newLinkNote}
                       onChange={(e) => setNewLinkNote(e.target.value)}
                       onKeyDown={(e) => { if (e.key === 'Enter') handleCreateShareLink() }}
-                      placeholder="Name this link (optional)…"
-                      aria-label="Share link name (optional)"
+                      placeholder="Nomeie este link (opcional)…"
+                      aria-label="Nome do link de compartilhamento (opcional)"
                       className="h-9 min-w-0 flex-1 border-0 bg-transparent p-0 text-[14px] leading-5 tracking-[-0.25px] text-kumo-default outline-none placeholder:text-kumo-inactive"
                       disabled={creatingLink || sharingProhibited}
                     />
                     <RoleMenu
-                      ariaLabel="Access granted by link"
+                      ariaLabel="Acesso concedido pelo link"
                       value={newLinkRole}
                       onValueChange={setNewLinkRole}
                       disabled={creatingLink || sharingProhibited}
                       container={menuContainer}
                     />
                     <WorkshopButton tone="primary" className="shrink-0 !rounded-xl" onClick={handleCreateShareLink} disabled={creatingLink || sharingProhibited}>
-                      {creatingLink ? 'Creating…' : 'Create link'}
+                      {creatingLink ? 'Criando…' : 'Criar link'}
                     </WorkshopButton>
-                    <WorkshopIconButton aria-label="Cancel creating link" onClick={() => setShowLinkComposer(false)}>
+                    <WorkshopIconButton aria-label="Cancelar criação do link" onClick={() => setShowLinkComposer(false)}>
                       <X size={14} />
                     </WorkshopIconButton>
                 </div>
@@ -934,7 +958,7 @@ export default function ShareModal({ open, onClose, overseer, metadata, currentU
                 disabled={sharingProhibited}
                 className="themed-compact-shadow flex h-12 w-full cursor-pointer items-center justify-center gap-1.5 rounded-2xl border border-kumo-line/80 bg-kumo-base px-3 text-[13px] font-medium text-kumo-subtle transition-[background-color,color,transform] duration-150 ease-out hover:bg-kumo-elevated/60 hover:text-kumo-default active:scale-[0.99] disabled:cursor-not-allowed disabled:opacity-40"
               >
-                <Link size={14} /> Create a share link
+                <Link size={14} /> Criar link de compartilhamento
               </button>
             )}
           </div>
@@ -945,7 +969,7 @@ export default function ShareModal({ open, onClose, overseer, metadata, currentU
           <section aria-labelledby="people-heading" className="mt-4">
             <div className="mb-2 px-1">
               <h3 id="people-heading" className="text-[12px] leading-4 font-medium tracking-[-0.15px] text-kumo-subtle">
-                People with access
+                Pessoas com acesso
               </h3>
             </div>
             <div className="overflow-hidden rounded-2xl border border-kumo-line/80 bg-kumo-base">
@@ -962,19 +986,19 @@ export default function ShareModal({ open, onClose, overseer, metadata, currentU
                       <PersonAvatar api={authenticatedApi} userId={profile.id} name={profile.name} size={32} />
                       <div className="min-w-0 flex-1">
                         <p className="truncate text-[13px] leading-[17px] font-medium tracking-[-0.25px] text-kumo-default">
-                          {profile.name}{profile.id === currentUser?.id ? ' (you)' : ''}
+                          {profile.name}{profile.id === currentUser?.id ? ' (você)' : ''}
                         </p>
                         <p className="truncate text-[12px] leading-[15px] tracking-[-0.15px] text-kumo-subtle">
                           {row.kind === 'owner' ? profile.id : describeAccess(row.info)}
                         </p>
                       </div>
                       {row.kind === 'owner' ? (
-                        <span className="px-2 text-[12px] text-kumo-subtle">Owner</span>
+                        <span className="px-2 text-[12px] text-kumo-subtle">Proprietário</span>
                       ) : isRemoving ? (
                         <InlineConfirm
-                          label="Remove"
+                          label="Remover"
                           busy={removeTarget.previewing || confirmationBusy}
-                          busyLabel={removeTarget.previewing ? 'Checking…' : undefined}
+                          busyLabel={removeTarget.previewing ? 'Verificando…' : undefined}
                           onConfirm={handleConfirmRemoveCollaborator}
                           onCancel={() => setConfirmationTarget(null)}
                         />
@@ -985,7 +1009,7 @@ export default function ShareModal({ open, onClose, overseer, metadata, currentU
                             danger
                             className="!h-7 !w-7 opacity-35 transition-opacity group-hover:opacity-100 focus-visible:opacity-100"
                             onClick={() => handleStartRemoveCollaborator(row.info.profile.id)}
-                            aria-label={`Remove ${profile.name}`}
+                            aria-label={`Remover ${profile.name}`}
                             disabled={confirmationBusy}
                           >
                             <Trash size={13} />
@@ -996,7 +1020,9 @@ export default function ShareModal({ open, onClose, overseer, metadata, currentU
                     {isRemoving && downstreamDependents.length > 0 && (
                       <div className="mt-2.5 share-expand-in">
                         <p className="mb-1.5 text-[12px] leading-4 text-kumo-subtle">
-                          {downstreamDependents.length} other {downstreamDependents.length === 1 ? 'person loses' : 'people lose'} access through {profile.name}. Keep anyone?
+                          {downstreamDependents.length === 1
+                            ? `Mais 1 pessoa perde acesso por meio de ${profile.name}. Manter alguém?`
+                            : `Mais ${downstreamDependents.length} pessoas perdem acesso por meio de ${profile.name}. Manter alguém?`}
                         </p>
                         <DependentKeepList
                           dependents={downstreamDependents}
@@ -1019,7 +1045,7 @@ export default function ShareModal({ open, onClose, overseer, metadata, currentU
           <section aria-labelledby="links-heading" className="mt-4">
             <div className="mb-2 px-1">
               <h3 id="links-heading" className="text-[12px] leading-4 font-medium tracking-[-0.15px] text-kumo-subtle">
-                Share links
+                Links de compartilhamento
               </h3>
             </div>
 
@@ -1043,19 +1069,19 @@ export default function ShareModal({ open, onClose, overseer, metadata, currentU
                                 if (e.key === 'Enter') handleSaveShareLinkNote()
                                 if (e.key === 'Escape') cancelRenameShareLink()
                               }}
-                              placeholder="Name this link…"
-                              aria-label="Share link name"
+                              placeholder="Nomeie este link…"
+                              aria-label="Nome do link de compartilhamento"
                               className="block w-full border-0 bg-transparent p-0 text-[13px] leading-[17px] font-medium tracking-[-0.25px] text-kumo-default outline-none shadow-[inset_0_-1px_0_0_var(--color-kumo-line)] transition-shadow placeholder:font-normal placeholder:text-kumo-inactive focus:shadow-[inset_0_-1px_0_0_var(--color-kumo-fill)]"
                               disabled={savingShareLinkNote}
                             />
                           ) : (
-                            <p className="truncate text-[13px] leading-[17px] font-medium tracking-[-0.25px] text-kumo-default">{sk.note || 'Untitled link'}</p>
+                            <p className="truncate text-[13px] leading-[17px] font-medium tracking-[-0.25px] text-kumo-default">{sk.note || 'Link sem título'}</p>
                           )}
-                          <p className="truncate text-[12px] leading-[15px] tracking-[-0.15px] text-kumo-subtle">Created by {sk.createdBy.name} · {formatRelativeTime(sk.created)}</p>
+                          <p className="truncate text-[12px] leading-[15px] tracking-[-0.15px] text-kumo-subtle">Criado por {sk.createdBy.name} · {formatRelativeTime(sk.created)}</p>
                         </div>
                         {isRenaming ? (
                           <InlineConfirm
-                            label="Save"
+                            label="Salvar"
                             tone="brand"
                             busy={savingShareLinkNote}
                             onConfirm={handleSaveShareLinkNote}
@@ -1063,9 +1089,9 @@ export default function ShareModal({ open, onClose, overseer, metadata, currentU
                           />
                         ) : isRevoking ? (
                           <InlineConfirm
-                            label="Revoke"
+                            label="Revogar"
                             busy={revokeTarget.previewing || confirmationBusy}
-                            busyLabel={revokeTarget.previewing ? 'Checking…' : undefined}
+                            busyLabel={revokeTarget.previewing ? 'Verificando…' : undefined}
                             onConfirm={handleConfirmRevokeShareLink}
                             onCancel={() => setConfirmationTarget(null)}
                           />
@@ -1075,7 +1101,7 @@ export default function ShareModal({ open, onClose, overseer, metadata, currentU
                             <WorkshopIconButton
                               className="!h-7 !w-7"
                               onClick={() => handleCopyShareLink(sk.linkId)}
-                              aria-label={`Copy ${sk.note || 'share link'}`}
+                              aria-label={`Copiar ${sk.note || 'link de compartilhamento'}`}
                               disabled={confirmationBusy || copyingLinkId === sk.linkId || sharingProhibited}
                             >
                               {copiedLinkId === sk.linkId ? <Check size={13} weight="bold" /> : <Copy size={13} />}
@@ -1083,7 +1109,7 @@ export default function ShareModal({ open, onClose, overseer, metadata, currentU
                             <WorkshopIconButton
                               className="!h-7 !w-7 opacity-35 transition-opacity group-hover:opacity-100 focus-visible:opacity-100"
                               onClick={() => startRenameShareLink(sk)}
-                              aria-label={`Rename ${sk.note || 'share link'}`}
+                              aria-label={`Renomear ${sk.note || 'link de compartilhamento'}`}
                               disabled={confirmationBusy}
                             >
                               <PencilSimple size={13} />
@@ -1092,7 +1118,7 @@ export default function ShareModal({ open, onClose, overseer, metadata, currentU
                               danger
                               className="!h-7 !w-7 opacity-35 transition-opacity group-hover:opacity-100 focus-visible:opacity-100"
                               onClick={() => handleStartRevokeShareLink(sk.linkId)}
-                              aria-label={`Revoke ${sk.note || 'share link'}`}
+                              aria-label={`Revogar ${sk.note || 'link de compartilhamento'}`}
                               disabled={confirmationBusy}
                             >
                               <Trash size={13} />
@@ -1103,7 +1129,9 @@ export default function ShareModal({ open, onClose, overseer, metadata, currentU
                       {isRevoking && revokeTarget.dependents.length > 0 && (
                         <div className="mt-2.5 share-expand-in">
                           <p className="mb-1.5 text-[12px] leading-4 text-kumo-subtle">
-                            {revokeTarget.dependents.length} {revokeTarget.dependents.length === 1 ? 'person loses' : 'people lose'} access through this link. Keep anyone?
+                            {revokeTarget.dependents.length === 1
+                              ? '1 pessoa perde acesso por meio deste link. Manter alguém?'
+                              : `${revokeTarget.dependents.length} pessoas perdem acesso por meio deste link. Manter alguém?`}
                           </p>
                           <DependentKeepList
                             dependents={revokeTarget.dependents}

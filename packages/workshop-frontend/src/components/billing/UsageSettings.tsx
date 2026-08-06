@@ -61,7 +61,7 @@ export default function UsageSettings() {
       const { url } = await authenticatedApi.connectAccount('cloudflare')
       window.open(url, '_blank', 'noopener,noreferrer')
     } catch {
-      toasts.add({ title: 'Failed to start Cloudflare connection', variant: 'error' })
+      toasts.add({ title: 'Falha ao iniciar a conexão com o Cloudflare', variant: 'error' })
     } finally {
       setBusy(false)
     }
@@ -71,11 +71,11 @@ export default function UsageSettings() {
     setSelecting(accountId)
     try {
       await authenticatedApi.selectCloudflareAccount(accountId)
-      toasts.add({ title: 'Cloudflare account selected', variant: 'success' })
+      toasts.add({ title: 'Conta do Cloudflare selecionada', variant: 'success' })
       setAccounts(null)
       refresh()
     } catch (err) {
-      const msg = err instanceof Error ? err.message : 'Failed to select account'
+      const msg = err instanceof Error ? err.message : 'Falha ao selecionar a conta'
       toasts.add({ title: msg, variant: 'error' })
     } finally {
       setSelecting(null)
@@ -85,23 +85,23 @@ export default function UsageSettings() {
   return (
     <section className="flex flex-col gap-3">
       <h2 className="px-1 text-[12px] font-medium uppercase tracking-[0.08em] text-kumo-inactive">
-        Usage &amp; billing
+        Uso e cobrança
       </h2>
       <div className="rounded-xl border border-kumo-line bg-kumo-base p-5">
       {loading || !usage ? (
-        <p className="text-sm text-kumo-subtle">Loading usage…</p>
+        <p className="text-sm text-kumo-subtle">Carregando uso…</p>
       ) : (
         <div className="space-y-6">
           {/* Free daily allowance */}
           <div>
-            <p className="text-xs font-medium text-kumo-subtle mb-1">Free daily allowance</p>
+            <p className="text-xs font-medium text-kumo-subtle mb-1">Cota diária gratuita</p>
             <p className="text-sm text-kumo-default">
-              {usage.remaining} of {usage.dailyLimit}{' '}
-              {usage.dailyLimit === 1 ? 'request' : 'requests'} remaining today
+              {usage.remaining} de {usage.dailyLimit}{' '}
+              {usage.dailyLimit === 1 ? 'solicitação restante' : 'solicitações restantes'} hoje
             </p>
             {usage.resetAt && (
               <p className="text-xs text-kumo-subtle mt-1">
-                Resets at 00:00 UTC, in{' '}
+                Renova às 00:00 UTC, em{' '}
                 <ResetCountdown resetAt={usage.resetAt} onElapsed={refresh} />.
               </p>
             )}
@@ -109,22 +109,22 @@ export default function UsageSettings() {
 
           {/* Cloudflare connection / credits */}
           <div>
-            <p className="text-xs font-medium text-kumo-subtle mb-1">Cloudflare account</p>
+            <p className="text-xs font-medium text-kumo-subtle mb-1">Conta do Cloudflare</p>
             {!usage.connected ? (
               <div className="space-y-3">
                 <div className="flex items-center gap-2 text-sm text-kumo-subtle">
                   <CloudflareLogo size={16} />
-                  <span>Not connected</span>
+                  <span>Não conectado</span>
                 </div>
                 <p className="text-sm text-kumo-subtle">
-                  Connect your Cloudflare account to keep building once your free allowance runs
-                  out. Usage beyond the free tier is billed to your own Cloudflare AI Gateway
-                  credits.
+                  Conecte sua conta do Cloudflare para continuar construindo quando sua cota
+                  gratuita acabar. O uso além do nível gratuito é cobrado dos seus próprios
+                  créditos do Cloudflare AI Gateway.
                 </p>
                 <div className="pt-1">
                   <Button variant="primary" size="sm" onClick={connect} loading={busy}>
                     <Lightning size={14} weight="bold" className="mr-1" />
-                    Connect Cloudflare
+                    Conectar Cloudflare
                   </Button>
                 </div>
               </div>
@@ -133,17 +133,17 @@ export default function UsageSettings() {
               <div className="space-y-3">
                 <div className="flex items-center gap-2 text-sm text-kumo-default">
                   <Warning size={18} weight="bold" className="text-kumo-warning" />
-                  <span>Choose which Cloudflare account to bill</span>
+                  <span>Escolha qual conta do Cloudflare cobrar</span>
                 </div>
                 <p className="text-sm text-kumo-subtle">
-                  Your connection has access to multiple Cloudflare accounts. Select the one whose
-                  AI Gateway credits should be used.
+                  Sua conexão tem acesso a várias contas do Cloudflare. Selecione aquela cujos
+                  créditos do AI Gateway devem ser usados.
                 </p>
                 {accounts === null ? (
-                  <p className="text-sm text-kumo-subtle">Loading accounts…</p>
+                  <p className="text-sm text-kumo-subtle">Carregando contas…</p>
                 ) : accounts.length === 0 ? (
                   <p className="text-sm text-kumo-subtle">
-                    No accounts available on this connection.
+                    Nenhuma conta disponível nesta conexão.
                   </p>
                 ) : (
                   <div className="flex flex-col gap-2">
@@ -168,16 +168,16 @@ export default function UsageSettings() {
                 <div className="flex items-center gap-2 text-sm text-kumo-default">
                   <CloudCheck size={18} weight="bold" className="text-kumo-success" />
                   <span>
-                    Connected
+                    Conectado
                     {usage.accountName && <> — {usage.accountName}</>}
                   </span>
                 </div>
                 <p className="text-sm text-kumo-default">
-                  Account balance:{' '}
+                  Saldo da conta:{' '}
                   {usage.balance !== null ? (
                     <strong>${usage.balance.toFixed(2)}</strong>
                   ) : (
-                    <span className="text-kumo-subtle">unknown</span>
+                    <span className="text-kumo-subtle">desconhecido</span>
                   )}
                 </p>
 
@@ -188,7 +188,7 @@ export default function UsageSettings() {
                     onClick={() => window.open(buildAddCreditsUrl(usage.accountId), '_blank')}
                   >
                     <Lightning size={14} weight="bold" className="mr-1" />
-                    Add credits
+                    Adicionar créditos
                   </Button>
                 </div>
               </div>
@@ -196,14 +196,14 @@ export default function UsageSettings() {
           </div>
 
           <p className="text-xs text-kumo-subtle border-t border-kumo-line pt-3">
-            Learn more about{' '}
+            Saiba mais sobre a{' '}
             <a
               href="https://developers.cloudflare.com/ai-gateway/features/unified-billing/"
               target="_blank"
               rel="noreferrer"
               className="underline"
             >
-              AI Gateway unified billing
+              cobrança unificada do AI Gateway
             </a>
             .
           </p>

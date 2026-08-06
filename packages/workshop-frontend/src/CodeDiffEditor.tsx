@@ -5,7 +5,7 @@ import type { editor } from 'monaco-editor'
 import type * as Y from 'yjs'
 import { MonacoBinding } from 'y-monaco'
 import { defineGadgetsCodeTheme, getGadgetsCodeTheme, monoFont } from './components/monacoTheme'
-import { buildDiffModel, type DiffModel } from './diff/diffModel'
+import { buildDiffModel, type DiffModel, type DiffStatus } from './diff/diffModel'
 import { renderDiffLayer, renderSplitDiffLayer } from './diff/diffRenderer'
 import { getLanguage } from './getLanguage'
 import { useTheme } from './ThemeContext'
@@ -23,6 +23,16 @@ type DiffLayoutPreference = 'stacked' | 'split'
 
 const DIFF_LAYOUT_STORAGE_KEY = 'gadgets:workshop:diffLayout'
 const SPLIT_DIFF_MIN_WIDTH = 1100
+
+// Display labels for DiffStatus (defined in ./diff/diffModel). Kept local to the display layer so
+// the underlying type/logic stays untouched -- same pattern as THEME_MODE_LABELS in
+// SidebarUtilityStrip.tsx.
+const STATUS_LABELS: Record<DiffStatus, string> = {
+  Added: 'Adicionado',
+  Deleted: 'Excluído',
+  Modified: 'Modificado',
+  Unchanged: 'Sem alteração',
+}
 
 function getInitialDiffLayoutPreference(): DiffLayoutPreference {
   try {
@@ -407,7 +417,7 @@ export default function CodeDiffEditor({
         className="flex items-center justify-center bg-kumo-base text-[13px] leading-[18px] tracking-[-0.25px] text-kumo-subtle"
         style={{ height }}
       >
-        {!filename ? 'Select a file to view changes' : 'Loading diff...'}
+        {!filename ? 'Selecione um arquivo para ver as alterações' : 'Carregando diff...'}
       </div>
     )
   }
@@ -423,8 +433,8 @@ export default function CodeDiffEditor({
             <button
               type="button"
               className={layoutButtonClass(diffLayoutPreference === 'stacked')}
-              title="Stacked diff"
-              aria-label="Use stacked diff layout"
+              title="Diff empilhado"
+              aria-label="Usar layout de diff empilhado"
               aria-pressed={diffLayoutPreference === 'stacked'}
               onClick={() => setDiffLayoutPreference('stacked')}
             >
@@ -433,8 +443,8 @@ export default function CodeDiffEditor({
             <button
               type="button"
               className={layoutButtonClass(diffLayoutPreference === 'split' && canSplitDiff, !canSplitDiff)}
-              title={canSplitDiff ? 'Split diff' : 'Split diff needs more space'}
-              aria-label="Use split diff layout"
+              title={canSplitDiff ? 'Diff dividido' : 'O diff dividido precisa de mais espaço'}
+              aria-label="Usar layout de diff dividido"
               aria-pressed={diffLayoutPreference === 'split' && canSplitDiff}
               disabled={!canSplitDiff}
               onClick={() => setDiffLayoutPreference('split')}
@@ -447,7 +457,7 @@ export default function CodeDiffEditor({
             style={{ fontFamily: monoFont }}
           >
             {model.status !== 'Modified' && (
-              <span className="text-[10px] font-medium text-kumo-subtle">{model.status}</span>
+              <span className="text-[10px] font-medium text-kumo-subtle">{STATUS_LABELS[model.status]}</span>
             )}
             <span className="text-kumo-danger">-{model.deletions}</span>
             <span className="text-kumo-success">+{model.additions}</span>

@@ -35,9 +35,9 @@ interface ActivityProps {
 }
 
 const HISTORY_FILTERS: { value: HistoryFilter; label: string }[] = [
-  { value: 'all', label: 'All' },
-  { value: 'action', label: 'Actions' },
-  { value: 'observation', label: 'Observations' },
+  { value: 'all', label: 'Todos' },
+  { value: 'action', label: 'Ações' },
+  { value: 'observation', label: 'Observações' },
   { value: 'bindHook', label: 'Hooks' },
 ]
 
@@ -46,11 +46,11 @@ function timeValue(date: Date | undefined): number {
 }
 
 function formatClockTime(date: Date): string {
-  return new Date(date).toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' })
+  return new Date(date).toLocaleTimeString('pt-BR', { hour: 'numeric', minute: '2-digit' })
 }
 
 function formatFullDate(date: Date): string {
-  return new Date(date).toLocaleString([], {
+  return new Date(date).toLocaleString('pt-BR', {
     month: 'short',
     day: 'numeric',
     hour: 'numeric',
@@ -60,11 +60,11 @@ function formatFullDate(date: Date): string {
 
 export function formatRelativeTime(date: Date): string {
   const minutes = Math.floor(Math.max(0, Date.now() - new Date(date).getTime()) / 60_000)
-  if (minutes < 1) return 'just now'
-  if (minutes < 60) return `${minutes}m ago`
+  if (minutes < 1) return 'agora mesmo'
+  if (minutes < 60) return `${minutes}m atrás`
   const hours = Math.floor(minutes / 60)
-  if (hours < 24) return `${hours}h ago`
-  return `${Math.floor(hours / 24)}d ago`
+  if (hours < 24) return `${hours}h atrás`
+  return `${Math.floor(hours / 24)}d atrás`
 }
 
 function startOfDay(date: Date): number {
@@ -74,32 +74,32 @@ function startOfDay(date: Date): number {
 function dayLabel(date: Date): string {
   const value = new Date(date)
   const days = Math.round((startOfDay(new Date()) - startOfDay(value)) / 86_400_000)
-  if (days === 0) return 'Today'
-  if (days === 1) return 'Yesterday'
-  return value.toLocaleDateString([], { month: 'long', day: 'numeric', year: 'numeric' })
+  if (days === 0) return 'Hoje'
+  if (days === 1) return 'Ontem'
+  return value.toLocaleDateString('pt-BR', { month: 'long', day: 'numeric', year: 'numeric' })
 }
 
 function activityStatus(
   record: ActionLogEntry,
 ): { label: string; dotClass: string; textClass: string } {
   if (record.type === 'observation') {
-    return { label: 'Observed', dotClass: 'bg-kumo-inactive', textClass: 'text-kumo-subtle' }
+    return { label: 'Observado', dotClass: 'bg-kumo-inactive', textClass: 'text-kumo-subtle' }
   }
   if (record.type === 'bindHook') {
     if (record.hookId === undefined) {
-      return { label: 'Deleted', dotClass: 'bg-kumo-inactive', textClass: 'text-kumo-subtle' }
+      return { label: 'Excluído', dotClass: 'bg-kumo-inactive', textClass: 'text-kumo-subtle' }
     }
     return record.enabled
-      ? { label: 'Enabled', dotClass: 'bg-kumo-success', textClass: 'text-kumo-subtle' }
-      : { label: 'Disabled', dotClass: 'bg-kumo-inactive', textClass: 'text-kumo-subtle' }
+      ? { label: 'Habilitado', dotClass: 'bg-kumo-success', textClass: 'text-kumo-subtle' }
+      : { label: 'Desabilitado', dotClass: 'bg-kumo-inactive', textClass: 'text-kumo-subtle' }
   }
   if (record.state === 'pending') {
-    return { label: 'Waiting', dotClass: 'bg-kumo-brand', textClass: 'text-kumo-strong' }
+    return { label: 'Aguardando', dotClass: 'bg-kumo-brand', textClass: 'text-kumo-strong' }
   }
   if (record.state === 'rejected') {
-    return { label: 'Denied', dotClass: 'bg-kumo-danger', textClass: 'text-kumo-danger' }
+    return { label: 'Negado', dotClass: 'bg-kumo-danger', textClass: 'text-kumo-danger' }
   }
-  return { label: 'Approved', dotClass: 'bg-kumo-success', textClass: 'text-kumo-subtle' }
+  return { label: 'Aprovado', dotClass: 'bg-kumo-success', textClass: 'text-kumo-subtle' }
 }
 
 function TypeIcon({ record, className }: { record: ActionLogEntry; className?: string }) {
@@ -164,7 +164,7 @@ export default function Activity({
       else await overseer.disableHook(hookId)
     } catch (error) {
       console.error('Failed to toggle hook:', error)
-      toasts.add({ title: `Failed to ${enabled ? 'enable' : 'disable'} hook`, variant: 'error' })
+      toasts.add({ title: `Falha ao ${enabled ? 'habilitar' : 'desabilitar'} hook`, variant: 'error' })
     } finally {
       setTogglingHooks(previous => {
         const next = new Set(previous)
@@ -184,7 +184,7 @@ export default function Activity({
   if (!isReady) {
     return (
       <div className="flex h-full items-center justify-center text-[13px] text-kumo-subtle">
-        Loading activity…
+        Carregando atividade…
       </div>
     )
   }
@@ -198,22 +198,22 @@ export default function Activity({
               <Check size={17} weight="bold" />
             </span>
             <p className="mt-3 text-[13px] font-medium leading-[18px] tracking-[-0.25px] text-kumo-default">
-              Nothing to review
+              Nada para revisar
             </p>
             <p className="mt-1 max-w-xs text-[13px] leading-[18px] tracking-[-0.25px] text-kumo-subtle">
-              Requests that need your approval show up here and in the workspace header.
+              Solicitações que precisam da sua aprovação aparecem aqui e no cabeçalho do espaço de trabalho.
             </p>
             <WorkshopButton className="mt-4" onClick={() => onViewChange('history')}>
-              View history
+              Ver histórico
             </WorkshopButton>
           </div>
         ) : (
           <>
             <div className={`${PANE_BAR} gap-2 px-5`}>
               <span className="text-[12.5px] font-medium leading-[17px] tracking-[-0.15px] text-kumo-default">
-                {pendingActions.length} {pendingActions.length === 1 ? 'request' : 'requests'} waiting
+                {pendingActions.length} {pendingActions.length === 1 ? 'solicitação' : 'solicitações'} aguardando
               </span>
-              <span className="ml-auto text-[11.5px] leading-[17px] text-kumo-inactive">Oldest first</span>
+              <span className="ml-auto text-[11.5px] leading-[17px] text-kumo-inactive">Mais antigas primeiro</span>
             </div>
             <div className="min-h-0 flex-1 overflow-auto">
               {pendingActions.map(record => {
@@ -268,7 +268,7 @@ export default function Activity({
               </button>
             ))}
             <span className="ml-auto pr-2 text-[11.5px] leading-[17px] tabular-nums text-kumo-inactive">
-              {historyShown} {historyShown === 1 ? 'event' : 'events'}
+              {historyShown} {historyShown === 1 ? 'evento' : 'eventos'}
             </span>
 
           </div>
@@ -276,28 +276,28 @@ export default function Activity({
           {historyTotal === 0 ? (
             <div className="flex flex-1 flex-col items-center justify-center px-6 text-center">
               <p className="m-0 text-[13px] font-medium leading-[18px] tracking-[-0.25px] text-kumo-default">
-                No activity yet
+                Nenhuma atividade ainda
               </p>
               <p className="mt-1 max-w-xs text-[13px] leading-[18px] tracking-[-0.25px] text-kumo-subtle">
-                Every resource an agent reads or changes is recorded here.
+                Todo recurso que um agente lê ou altera é registrado aqui.
               </p>
             </div>
           ) : historyShown === 0 ? (
             <div className="flex flex-1 flex-col items-center justify-center px-6 text-center">
-              <p className="m-0 text-[13px] font-medium text-kumo-default">No matching events</p>
+              <p className="m-0 text-[13px] font-medium text-kumo-default">Nenhum evento correspondente</p>
               <button
                 type="button"
                 onClick={() => setHistoryFilter('all')}
                 className="mt-1.5 cursor-pointer text-[12px] font-medium text-kumo-subtle hover:text-kumo-default"
               >
-                Show all activity
+                Mostrar toda a atividade
               </button>
             </div>
           ) : (
             <div className="min-h-0 flex-1 overflow-auto">
               <div className="grid grid-cols-[54px_minmax(0,1fr)_auto_16px] items-center gap-3 border-b border-kumo-line bg-kumo-elevated/50 px-5 py-1.5 text-[11px] font-medium uppercase tracking-[0.06em] text-kumo-inactive">
-                <span>Time</span>
-                <span>Event</span>
+                <span>Hora</span>
+                <span>Evento</span>
                 <span>Status</span>
                 <span />
               </div>
@@ -382,7 +382,7 @@ function AutoApprovalPanel({
       }
     }
     for (const group of byConnection.values()) {
-      group.title ||= 'Unavailable connection'
+      group.title ||= 'Conexão indisponível'
       group.entries = group.entries.toSorted((a, b) =>
         a.actionKind.label.localeCompare(b.actionKind.label))
     }
@@ -392,7 +392,7 @@ function AutoApprovalPanel({
   if (isLoading) {
     return (
       <div className="flex h-full items-center justify-center text-[13px] text-kumo-subtle">
-        Loading auto-approval…
+        Carregando aprovação automática…
       </div>
     )
   }
@@ -401,16 +401,16 @@ function AutoApprovalPanel({
     return (
       <div className="flex flex-1 flex-col items-center justify-center px-6 text-center">
         <p className="m-0 text-[13px] font-medium leading-[18px] tracking-[-0.25px] text-kumo-default">
-          {loadError ? 'Could not load auto-approval' : 'Nothing can run automatically'}
+          {loadError ? 'Não foi possível carregar a aprovação automática' : 'Nada pode ser executado automaticamente'}
         </p>
         <p className="mt-1 max-w-xs text-[13px] leading-[18px] tracking-[-0.25px] text-kumo-subtle">
           {loadError
-            ? 'The current rules may be incomplete. Try loading them again.'
-            : 'Action types appear here once a connected resource offers one its author marked safe to apply without review.'}
+            ? 'As regras atuais podem estar incompletas. Tente carregá-las novamente.'
+            : 'Os tipos de ação aparecem aqui quando um recurso conectado oferece um que seu autor marcou como seguro para aplicar sem revisão.'}
         </p>
         {loadError && (
           <WorkshopButton className="mt-4" onClick={() => void refresh()}>
-            Retry
+            Tentar novamente
           </WorkshopButton>
         )}
       </div>
@@ -422,8 +422,8 @@ function AutoApprovalPanel({
       <div className={`${PANE_BAR} gap-3 px-5`}>
         <p className="m-0 min-w-0 flex-1 truncate text-[12.5px] leading-[17px] tracking-[-0.2px] text-kumo-subtle">
           {loadError
-            ? 'Some auto-approval options could not be loaded.'
-            : 'Actions agents may take without asking. Everything else waits for your review.'}
+            ? 'Algumas opções de aprovação automática não puderam ser carregadas.'
+            : 'Ações que os agentes podem realizar sem perguntar. Tudo o mais aguarda sua revisão.'}
         </p>
         {loadError && (
           <button
@@ -431,7 +431,7 @@ function AutoApprovalPanel({
             onClick={() => void refresh()}
             className="cursor-pointer text-[12px] font-medium text-kumo-default hover:text-kumo-default-hover"
           >
-            Retry
+            Tentar novamente
           </button>
         )}
       </div>
@@ -464,17 +464,17 @@ function AutoApprovalPanel({
                     </span>
                     <span className="mt-0.5 block text-[12px] leading-4 tracking-[-0.2px] text-kumo-inactive">
                       {entry.orphaned
-                        ? 'This connection no longer offers this action; the rule still applies.'
+                        ? 'Esta conexão não oferece mais esta ação; a regra ainda se aplica.'
                         : entry.enabled
-                          ? 'Applied without asking'
-                          : 'Waits for your approval'}
+                          ? 'Aplicado sem perguntar'
+                          : 'Aguarda sua aprovação'}
                     </span>
                   </span>
                   <Switch
                     size="sm"
                     checked={entry.enabled}
                     disabled={busy}
-                    aria-label={`${entry.enabled ? 'Disable' : 'Enable'} auto-approval for ${entry.actionKind.label}`}
+                    aria-label={`${entry.enabled ? 'Desabilitar' : 'Habilitar'} aprovação automática para ${entry.actionKind.label}`}
                     onCheckedChange={enabled => void setEnabled(entry, enabled)}
                   />
                 </div>
@@ -617,7 +617,7 @@ function HistoryRow({
             <span className="text-kumo-subtle">{record.resourceTitle}</span>
             {resolvedBy && (
               <ResolverBadge profileId={resolvedBy.id}>
-                {autoApproved ? `Auto-approved (${resolvedBy.name}'s rule)` : `By ${resolvedBy.name}`}
+                {autoApproved ? `Aprovado automaticamente (regra de ${resolvedBy.name})` : `Por ${resolvedBy.name}`}
               </ResolverBadge>
             )}
             {resourceUrl && (
@@ -627,7 +627,7 @@ function HistoryRow({
                 rel="noopener noreferrer"
                 className="text-kumo-subtle hover:text-kumo-default hover:underline"
               >
-                Open resource
+                Abrir recurso
               </a>
             )}
             {record.type === 'bindHook' && record.hookId !== undefined && (

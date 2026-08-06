@@ -22,7 +22,8 @@ export function useResolveAction(
       onResolvedRef.current?.(actionId, decision === 'approve' ? 'approved' : 'rejected')
     } catch (error) {
       console.error(`Failed to ${decision} action:`, error)
-      toasts.add({ title: `Failed to ${decision} action`, variant: 'error' })
+      const title = decision === 'approve' ? 'Falha ao aprovar a ação' : 'Falha ao recusar a ação'
+      toasts.add({ title, variant: 'error' })
     } finally {
       setProcessing(previous => {
         const next = new Set(previous)

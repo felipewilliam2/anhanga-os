@@ -146,7 +146,7 @@ export function SidebarWorkspacesProvider({ children }: { children: ReactNode })
     } catch (err) {
       console.error('Failed to toggle pin:', err)
       setGadgets((prev) => prev.map((x) => (x.id === g.id ? { ...x, pinned: g.pinned } : x)))
-      toasts.add({ title: 'Failed to update favorite', variant: 'error' })
+      toasts.add({ title: 'Falha ao atualizar favorito', variant: 'error' })
     } finally {
       overseer[Symbol.dispose]()
     }
@@ -160,7 +160,7 @@ export function SidebarWorkspacesProvider({ children }: { children: ReactNode })
     } catch (err) {
       console.error('Failed to rename:', err)
       setGadgets((prev) => prev.map((x) => (x.id === g.id ? { ...x, title: g.title } : x)))
-      toasts.add({ title: 'Failed to rename workspace', variant: 'error' })
+      toasts.add({ title: 'Falha ao renomear espaço de trabalho', variant: 'error' })
     } finally {
       overseer[Symbol.dispose]()
     }
@@ -177,7 +177,7 @@ export function SidebarWorkspacesProvider({ children }: { children: ReactNode })
     } catch (err) {
       overseer?.[Symbol.dispose]()
       console.error('Failed to open workspace for sharing:', err)
-      toasts.add({ title: 'Failed to open share settings', variant: 'error' })
+      toasts.add({ title: 'Falha ao abrir configurações de compartilhamento', variant: 'error' })
     }
   }, [authenticatedApi, toasts])
 
@@ -197,12 +197,12 @@ export function SidebarWorkspacesProvider({ children }: { children: ReactNode })
       }
       setGadgets((prev) => prev.filter((x) => x.id !== deleteTarget.id))
       toasts.add({
-        title: deleteTarget.owner ? 'Workspace removed' : 'Workspace deleted',
+        title: deleteTarget.owner ? 'Espaço de trabalho removido' : 'Espaço de trabalho excluído',
         variant: 'success',
       })
     } catch (err) {
       console.error('Failed to delete workspace:', err)
-      toasts.add({ title: 'Failed to delete workspace', variant: 'error' })
+      toasts.add({ title: 'Falha ao excluir espaço de trabalho', variant: 'error' })
     } finally {
       setIsDeleting(false)
       setDeleteTarget(null)
@@ -231,14 +231,14 @@ export function SidebarWorkspacesProvider({ children }: { children: ReactNode })
         open={deleteTarget !== null}
         onOpenChange={(open) => { if (!open) setDeleteTarget(null) }}
         isDeleting={isDeleting}
-        title={deleteTarget?.owner ? 'Remove workspace' : 'Delete workspace'}
+        title={deleteTarget?.owner ? 'Remover espaço de trabalho' : 'Excluir espaço de trabalho'}
         description={
           deleteTarget?.owner
-            ? `Remove "${deleteTarget?.title || 'Untitled workspace'}" from your list? You can still access it via its link.`
-            : `Delete "${deleteTarget?.title || 'Untitled workspace'}"? This cannot be undone.`
+            ? `Remover "${deleteTarget?.title || 'Espaço de trabalho sem título'}" da sua lista? Você ainda poderá acessá-lo pelo link.`
+            : `Excluir "${deleteTarget?.title || 'Espaço de trabalho sem título'}"? Essa ação não pode ser desfeita.`
         }
-        confirmLabel={deleteTarget?.owner ? 'Remove' : 'Delete'}
-        confirmingLabel={deleteTarget?.owner ? 'Removing...' : 'Deleting...'}
+        confirmLabel={deleteTarget?.owner ? 'Remover' : 'Excluir'}
+        confirmingLabel={deleteTarget?.owner ? 'Removendo...' : 'Excluindo...'}
         onConfirm={handleDeleteConfirm}
       />
 
@@ -272,8 +272,8 @@ export function SidebarWorkspacesTools({ collapsed = false }: { collapsed?: bool
       <button
         type="button"
         onClick={() => openCommandPalette()}
-        aria-label="Search"
-        title="Search (⌘K)"
+        aria-label="Buscar"
+        title="Buscar (⌘K)"
         className="press flex h-9 w-9 cursor-pointer items-center justify-center rounded-lg text-kumo-subtle transition-colors hover:bg-kumo-tint hover:text-kumo-default"
       >
         <MagnifyingGlass size={15} />
@@ -327,7 +327,7 @@ export function SidebarWorkspacesLists({ collapsed = false }: { collapsed?: bool
     <div className="flex flex-col pb-3">
       {/* Favorites */}
       <SidebarSection
-        label="Favorites"
+        label="Favoritos"
         count={favorites.length}
         open={favOpen}
         onToggle={() => setFavOpen((o) => !o)}
@@ -335,7 +335,7 @@ export function SidebarWorkspacesLists({ collapsed = false }: { collapsed?: bool
       >
         {favorites.length === 0 ? (
           <p className="px-2.5 py-1.5 text-[12px] leading-4 tracking-[-0.2px] text-kumo-inactive">
-            Favorite a workspace to keep it here.
+            Favorite um espaço de trabalho para mantê-lo aqui.
           </p>
         ) : (
           <div className="flex flex-col">
@@ -355,7 +355,7 @@ export function SidebarWorkspacesLists({ collapsed = false }: { collapsed?: bool
 
       {/* Recent workspaces — no count here; the "Show all (N)" link already carries it. */}
       <SidebarSection
-        label="Recent workspaces"
+        label="Espaços de trabalho recentes"
         open={recentOpen}
         onToggle={() => setRecentOpen((o) => !o)}
       >
@@ -367,7 +367,7 @@ export function SidebarWorkspacesLists({ collapsed = false }: { collapsed?: bool
           </div>
         ) : recent.length === 0 ? (
           <p className="px-2.5 py-1.5 text-[12px] leading-4 tracking-[-0.2px] text-kumo-inactive">
-            {search ? 'No matches.' : 'No workspaces yet.'}
+            {search ? 'Nenhum resultado.' : 'Nenhum espaço de trabalho ainda.'}
           </p>
         ) : (
           <>
@@ -387,7 +387,7 @@ export function SidebarWorkspacesLists({ collapsed = false }: { collapsed?: bool
               to="/workspaces"
               className="mt-0.5 flex h-7 items-center gap-1 rounded-md px-2.5 text-[12px] font-medium tracking-[-0.2px] text-kumo-subtle transition-colors hover:bg-kumo-tint hover:text-kumo-default"
             >
-              {recentHidden > 0 ? `Show all (${recent.length})` : 'Show all'}
+              {recentHidden > 0 ? `Ver todos (${recent.length})` : 'Ver todos'}
               <ArrowRight size={11} weight="bold" />
             </Link>
           </>

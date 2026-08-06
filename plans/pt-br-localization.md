@@ -31,7 +31,8 @@ Termos de produto sem tradução óbvia — decisão tomada agora para não have
 |---|---|---|
 | Workspace | Espaço de trabalho | |
 | Gadget | Gadget | Mantido — termo de produto, como "app"; "aplicativo" é aceitável como alternativa pontual quando "Gadget" já apareceu na mesma frase |
-| Blueprint | Modelo | "Blueprint" = molde para criar um Gadget |
+| Blueprint | Template | Revisado na Tarefa 3: "Modelo" colidia com "modelo de IA" (AI model), já em uso desde a Tarefa 2. "Template" é empréstimo comum no português técnico brasileiro e evita a ambiguidade. |
+| Model (AI) | Modelo | Só para modelo de IA (ex.: "Escolha seu modelo", seletor de modelo). Nunca usar "Modelo" para Blueprint — ver linha acima. |
 | Gatekeeper | Guardião | |
 | Connection / Connector | Conexão / Conector | |
 | Vendor | Provedor | Ex.: "Provedores conectados" |
@@ -50,6 +51,19 @@ Termos de produto sem tradução óbvia — decisão tomada agora para não have
 | Share | Compartilhar | |
 | Hook | Hook | Mantido — termo técnico do domínio (automação) |
 | Capsule | Cápsula | |
+| Deployment | Implantação | Adicionado na Tarefa 2 (aparece de novo em Admin/Settings) |
+| Login (substantivo) | Login | Mantido como empréstimo consagrado no português brasileiro (ex.: "O login foi cancelado."); o verbo "sign in" continua "Entrar" |
+| Binding | Vinculação | Adicionado na Tarefa 6 (Conexões/Guardiões). Refere-se ao vínculo entre um gadget e um recurso/conexão externa (ex.: "Nome da vinculação", "A vinculação X será removida"). |
+| Configurator | Configurador | Adicionado na Tarefa 6 — tradução literal direta, sem ambiguidade com outros termos do glossário. |
+| Diff | Diff | Adicionado na Tarefa 8a — mantido, termo técnico consagrado em ferramentas de código, sem tradução natural equivalente. |
+| Chat | Conversa | Adicionado na Tarefa 8b. Usado para o substantivo geral ("Excluir conversa", "Renomear conversa", "Nenhuma conversa ainda"); a aba/rótulo curto "Chat" (ex.: nas abas Chat/Conexões do modo sidebar) foi mantido como está — ver observação da Tarefa 8b no relatório. |
+| Draft | Rascunho | Adicionado na Tarefa 8b (alterações de rascunho no chat: "Rascunho de alterações pendente", "Salvar rascunho", "Descartar rascunho"). |
+| Attachment | Anexo | Adicionado na Tarefa 8b (anexos de chat: "Remover anexo", "Arquivo anexado", nome de arquivo padrão ao baixar um anexo sem nome). |
+| Thinking (reasoning trace) | Raciocínio / Raciocinando | Adicionado na Tarefa 8b. "Show/Hide thinking" → "Mostrar/Ocultar raciocínio"; indicador de streaming "Thinking" → "Raciocinando". |
+| Slash command | Comando de barra | Adicionado na Tarefa 8b (picker de comandos do composer: "Comandos", "Comando de barra inválido", etc.). |
+| Tool call | Chamada de ferramenta | Adicionado na Tarefa 8b (resumo de execuções do agente: "3 chamadas de ferramenta"). |
+| Scope (permissão/API) | Escopo | Adicionado na Tarefa 8b (cartão de permissão do chat: "1 escopo" / "2 escopos", "Escopos da API"). Não confundir com "Vendor"/"Connection" já no glossário. |
+| Compaction (context) | Compactação / Compactar | Adicionado na Tarefa 8b (resumo de contexto do chat quando o histórico é compactado: "Contexto compactado", "compactou o contexto", indicador "Compactando…"). |
 
 Se aparecer um termo novo durante a tradução que não está nesta tabela, pare e adicione a decisão aqui antes de seguir — não improvise traduções diferentes para o mesmo termo em arquivos diferentes.
 
@@ -107,7 +121,8 @@ O "chrome" que aparece em toda tela autenticada.
 - `packages/workshop-frontend/src/TopBarNotice.tsx`
 - `packages/workshop-frontend/src/components/SiteLogo.tsx`
 - `packages/workshop-frontend/src/FrontendErrorBoundary.tsx`
-- `packages/workshop-frontend/src/routes/__root.tsx` (estados de "Loading...", "Connection lost — reconnecting…", "Authentication error", botão "Retry" — renderizados para qualquer usuário autenticado)
+- `packages/workshop-frontend/src/routes/__root.tsx` (estados de "Loading...", "Connection lost — reconnecting…", "Authentication error", botão "Retry" — renderizados para qualquer usuário autenticado; inclui também `"Authenticating..."` sinalizado pela Tarefa 2 como fora do escopo dela)
+- `packages/workshop-frontend/index.html` (atributo `lang="en"` no `<html>` — achado pela Tarefa 2: com o app já em pt-BR, isso faz o tradutor automático do Chrome tentar "traduzir de volta" o app para usuários reais; trocar para `lang="pt-BR"`)
 
 - [ ] Traduzir os arquivos acima
 - [ ] `node scripts/check-pt-br-strings.mjs packages/workshop-frontend/src/components/AppShell packages/workshop-frontend/src/components/Header.tsx packages/workshop-frontend/src/components/UserMenu.tsx packages/workshop-frontend/src/components/AnnouncementBanner.tsx packages/workshop-frontend/src/TopBarNotice.tsx packages/workshop-frontend/src/components/SiteLogo.tsx packages/workshop-frontend/src/FrontendErrorBoundary.tsx packages/workshop-frontend/src/routes/__root.tsx`
@@ -192,7 +207,7 @@ Já parcialmente conhecido desta sessão (nome do site, logo, tema).
 - [ ] Conferir visualmente: página de conexões, conectar um provedor (ex.: e-mail ou Google em modo de teste), seletor de modelo de IA
 - [ ] Commit: `git commit -m "i18n: traduzir conexões e guardiões para pt-BR"`
 
-## Tarefa 7 — Modelos (Blueprints)
+## Tarefa 7 — Templates (Blueprints)
 
 **Arquivos:**
 - `packages/workshop-frontend/src/BlueprintsPage.tsx`
@@ -209,8 +224,8 @@ Já parcialmente conhecido desta sessão (nome do site, logo, tema).
 
 - [ ] Traduzir os arquivos acima
 - [ ] `node scripts/check-pt-br-strings.mjs packages/workshop-frontend/src/BlueprintsPage.tsx packages/workshop-frontend/src/BlueprintLandingPage.tsx packages/workshop-frontend/src/BlueprintModal.tsx packages/workshop-frontend/src/components/BlueprintBindingCard.tsx packages/workshop-frontend/src/components/BlueprintCard.tsx packages/workshop-frontend/src/components/BlueprintList.tsx packages/workshop-frontend/src/components/BlueprintPreviewImage.tsx "packages/workshop-frontend/src/routes/blueprint.\$id.tsx" packages/workshop-frontend/src/routes/blueprints.tsx packages/workshop-frontend/src/routes/outputs.tsx packages/workshop-frontend/src/GadgetExportMenu.tsx`
-- [ ] Conferir visualmente: página de modelos, página de saídas, exportar um gadget
-- [ ] Commit: `git commit -m "i18n: traduzir modelos (blueprints) para pt-BR"`
+- [ ] Conferir visualmente: página de templates, página de saídas, exportar um gadget
+- [ ] Commit: `git commit -m "i18n: traduzir templates (blueprints) para pt-BR"`
 
 ## Tarefa 8 — Editor de espaço de trabalho e chat (maior superfície — fazer por último entre as principais)
 
@@ -268,6 +283,7 @@ Já parcialmente conhecido desta sessão (nome do site, logo, tema).
 - [ ] Rodar a varredura completa: `node scripts/check-pt-br-strings.mjs packages/workshop-frontend/src` e revisar toda a lista — nesse ponto deve sobrar muito pouco (textos curtos que o heurístico não pega, código de terceiros, etc.)
 - [ ] Rodar `pnpm --filter @gadgets/workshop-frontend test` — nenhuma mudança de texto deve quebrar teste (se algum teste comparar strings literais em inglês, atualizar o teste junto)
 - [ ] Passar pelo app inteiro uma vez, ponta a ponta, como um usuário novo: criar conta → configuração inicial → criar um espaço de trabalho → conversar com o agente → conectar um provedor → abrir Admin → sair
+- [ ] Atenção especial à página de Admin (Tarefa 5): a verificação visual interativa dela não pôde ser feita durante a implementação nem durante a revisão (ferramenta de browser indisponível nas duas ocasiões) — conferir com cuidado as 4 abas (Em geral, Guardiões, Formatos, Acesso) e a página de Perfil por texto cortado/quebrado com strings mais longas em português
 - [ ] Conferir consistência do glossário: buscar por termos que possam ter sido traduzidos de forma diferente em arquivos diferentes (ex.: `grep -rn "Área de trabalho\|Espaço de trabalho" packages/workshop-frontend/src` — só deve aparecer uma forma)
 - [ ] Commit final se sobrar algo: `git commit -m "i18n: ajustes finais de consistência pt-BR"`
 

@@ -68,7 +68,7 @@ export async function createFromFormat(
     navigate({ to: '/workspace/$id', params: { id } })
   } catch (err) {
     console.error('Failed to create from format:', err)
-    toasts.add({ title: `Couldn't create a new ${format.output.noun}`, variant: 'error' })
+    toasts.add({ title: `Não foi possível criar ${format.output.noun}`, variant: 'error' })
     throw err
   } finally {
     overseer?.[Symbol.dispose]()

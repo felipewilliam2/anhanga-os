@@ -129,7 +129,7 @@ class GatekeeperAppHostImpl extends RpcTarget {
   // snapshot. Bounded per call; unknown or no-longer-visible workspaces come back as null.
   resolveWorkspaceTitles(ids: string[]): Promise<(string | null)[]> {
     if (!Array.isArray(ids) || ids.length > MAX_RESOLVED_WORKSPACES) {
-      throw new TypeError('Invalid workspace title lookup.')
+      throw new TypeError('Consulta de título de espaço de trabalho inválida.')
     }
     return this.#resolveWorkspaceTitles(ids)
   }
@@ -359,7 +359,7 @@ export default function SandboxedGatekeeperApp({ frame, gatekeeperVendorId }: {
       // allow-same-origin (the frame stays an opaque origin), and the app's CSP keeps connect-src 'none'.
       sandbox="allow-scripts allow-modals"
       allow="clipboard-write"
-      title="Gatekeeper app"
+      title="App do Guardião"
       style={iframeStyleForOverlay(overlay)}
     />
   )

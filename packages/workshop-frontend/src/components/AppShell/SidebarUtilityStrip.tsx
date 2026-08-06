@@ -7,6 +7,15 @@ import type { ThemeMode } from '../../theme'
 
 const THEME_SEQUENCE: ThemeMode[] = ['system', 'light', 'dark']
 
+// Display labels for theme mode values — presentational only, used just to render the tooltip /
+// aria-label text in pt-BR; the underlying ThemeMode values ('system' | 'light' | 'dark') are
+// unchanged.
+const THEME_MODE_LABELS: Record<ThemeMode, string> = {
+  system: 'sistema',
+  light: 'claro',
+  dark: 'escuro',
+}
+
 function nextThemeMode(mode: ThemeMode): ThemeMode {
   return THEME_SEQUENCE[(THEME_SEQUENCE.indexOf(mode) + 1) % THEME_SEQUENCE.length]
 }
@@ -14,17 +23,17 @@ function nextThemeMode(mode: ThemeMode): ThemeMode {
 function ThemeModeButton() {
   const { themeMode, resolvedThemeMode, setThemeMode } = useTheme()
   const label = themeMode === 'system'
-    ? `Theme: system (${resolvedThemeMode})`
-    : `Theme: ${themeMode}`
+    ? `Tema: sistema (${THEME_MODE_LABELS[resolvedThemeMode]})`
+    : `Tema: ${THEME_MODE_LABELS[themeMode]}`
   const nextMode = nextThemeMode(themeMode)
 
   return (
     <Tooltip
-      content={`${label}. Switch to ${nextMode}.`}
+      content={`${label}. Mudar para ${THEME_MODE_LABELS[nextMode]}.`}
       render={(
         <button
           type="button"
-          aria-label={`${label}. Switch to ${nextMode}.`}
+          aria-label={`${label}. Mudar para ${THEME_MODE_LABELS[nextMode]}.`}
           onClick={() => setThemeMode(nextMode)}
           className="flex h-8 w-8 cursor-pointer items-center justify-center rounded-md text-kumo-inactive transition-colors hover:bg-kumo-tint hover:text-kumo-default focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-kumo-ring focus-visible:ring-offset-2 focus-visible:ring-offset-kumo-elevated"
         >
@@ -83,7 +92,7 @@ export default function SidebarUtilityStrip({ collapsed = false }: { collapsed?:
         collapsed ? 'flex-col justify-center gap-2 px-1.5' : '',
       ].join(' ')}
     >
-      <StripLink to="/gatekeepers" label="Gatekeepers">
+      <StripLink to="/gatekeepers" label="Guardiões">
         <Plug size={15} />
       </StripLink>
       <div className={collapsed ? 'flex flex-col items-center gap-2' : 'ml-auto flex items-center gap-1'}>

@@ -24,43 +24,43 @@ type TaskSuggestion = {
 const SUGGESTIONS: TaskSuggestion[] = [
   {
     id: 'one-on-one',
-    label: 'Write a 1:1 pre-read',
-    description: 'A doc with a snapshot, things to inspect, and one ask',
+    label: 'Escrever preparação para um 1:1',
+    description: 'Um documento com uma visão geral, pontos a analisar e um pedido',
     icon: FileText,
     prompt:
-      'Create a document to prepare for my next 1:1 with a direct report: a current snapshot, a coaching frame, things to inspect, carryover items from last time, and one clear ask.',
+      'Crie um documento para preparar meu próximo 1:1 com um liderado: uma visão geral atual, um roteiro de coaching, pontos a analisar, pendências da última conversa e um pedido claro.',
   },
   {
     id: 'team-meeting',
-    label: 'Build a team meeting deck',
-    description: 'Slides with progress, risks, and what needs a decision',
+    label: 'Montar uma apresentação para reunião de equipe',
+    description: 'Slides com o progresso, riscos e o que precisa de decisão',
     icon: Presentation,
     prompt:
-      'Create a slide deck for my next team meeting: where things stand, what shipped, risks and blockers, and the decisions I need from the room. Ask me what the team is working on first.',
+      'Crie uma apresentação de slides para minha próxima reunião de equipe: como estão as coisas, o que foi entregue, riscos e bloqueios, e as decisões que preciso do grupo. Pergunte primeiro no que a equipe está trabalhando.',
   },
   {
     id: 'insights',
-    label: 'Find insights in my data',
-    description: 'Turn a spreadsheet or CSV into trends and recommendations',
+    label: 'Encontrar insights nos meus dados',
+    description: 'Transforme uma planilha ou CSV em tendências e recomendações',
     icon: ChartLineUp,
     prompt:
-      'Turn a dataset I will share (a spreadsheet, CSV, or pasted table) into a narrative analysis: key trends, anomalies, the "so what", and concrete recommendations.',
+      'Transforme um conjunto de dados que vou compartilhar (uma planilha, CSV ou tabela colada) em uma análise narrativa: principais tendências, anomalias, o "e daí" e recomendações concretas.',
   },
   {
     id: 'workflow',
-    label: 'Automate a workflow',
-    description: 'Trigger an agent when a new email arrives',
+    label: 'Automatizar um fluxo de trabalho',
+    description: 'Acionar um agente quando um novo e-mail chegar',
     icon: Lightning,
     prompt:
-      'Create an agent workflow that runs automatically when a new email arrives: read the message, decide what to do, and take action or draft a reply. Ask me which inbox to watch and what it should handle.',
+      'Crie um fluxo de trabalho de agente que roda automaticamente quando um novo e-mail chegar: ler a mensagem, decidir o que fazer e agir ou redigir uma resposta. Pergunte qual caixa de entrada monitorar e o que ele deve tratar.',
   },
   {
     id: 'app',
-    label: 'Build a quick tool',
-    description: 'A small interactive app, calculator, or dashboard',
+    label: 'Criar uma ferramenta rápida',
+    description: 'Um pequeno aplicativo interativo, calculadora ou painel',
     icon: AppWindow,
     prompt:
-      'Build a small interactive tool I can use right here — a calculator, dashboard, or explorer. Ask me what it should do, then create it.',
+      'Crie uma pequena ferramenta interativa que eu possa usar aqui mesmo — uma calculadora, painel ou explorador. Pergunte o que ela deve fazer e depois crie.',
   },
 ]
 
@@ -122,9 +122,9 @@ export default function HomeTaskSuggestions({
   const visible = useMemo(pickSuggestions, [])
 
   return (
-    <section aria-label="Example tasks" className="flex flex-col gap-1">
+    <section aria-label="Tarefas de exemplo" className="flex flex-col gap-1">
       <h3 className="px-1 pb-1 text-[12px] font-medium uppercase tracking-[0.06em] text-kumo-inactive">
-        Get started
+        Para começar
       </h3>
       <ul className="flex flex-col gap-0.5">
         {visible.map((suggestion) => (
