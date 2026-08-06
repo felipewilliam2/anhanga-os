@@ -72,6 +72,22 @@ function roleLabel(role: CollaboratorRole | undefined): string {
   return ROLE_LABELS[role ?? 'build']
 }
 
+// workshop-backend's addCollaborator() (sharing.ts) throws plain English Error messages, out of
+// this pt-BR pass's declared scope (translating ~250 backend error strings needs its own
+// error-code architecture). These two are the only errors reachable from this specific call site,
+// though, and both are ordinary user mistakes (self-inviting, or granting a role above your own),
+// so map them here rather than surface raw English in an otherwise pt-BR modal.
+function translateAddCollaboratorError(err: unknown): string {
+  const message = err instanceof Error ? err.message : undefined
+  if (message === 'Cannot add the workspace owner as a collaborator.') {
+    return 'Não é possível adicionar o dono do espaço de trabalho como colaborador.'
+  }
+  if (message === 'You cannot grant a role higher than your own.') {
+    return 'Você não pode conceder um papel superior ao seu.'
+  }
+  return message || 'Falha ao adicionar colaborador.'
+}
+
 const ROLE_OPTIONS: CollaboratorRole[] = ['build', 'use']
 
 function RoleMenu({
@@ -584,7 +600,7 @@ export default function ShareModal({ open, onClose, overseer, metadata, currentU
         toasts.add({ title: `${result.profile.name} adicionado(a) como colaborador(a).`, variant: 'success' })
       }
     } catch (err: any) {
-      toasts.add({ title: err.message || 'Falha ao adicionar colaborador.', variant: 'error' })
+      toasts.add({ title: translateAddCollaboratorError(err), variant: 'error' })
     } finally {
       addingRef.current = false
       setAdding(false)

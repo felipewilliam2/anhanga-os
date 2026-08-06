@@ -373,12 +373,12 @@ function canvasToBlob(canvas: HTMLCanvasElement, type: string, quality?: number)
 async function prepareChatAttachment(file: File): Promise<{blob: Blob, mimeType: string}> {
   if (!file.type.startsWith("image/")) {
     if (file.size > MAX_CHAT_ATTACHMENT_BYTES) {
-      throw new Error(`Attachments must be ${formatAttachmentSize(MAX_CHAT_ATTACHMENT_BYTES)} or smaller.`);
+      throw new Error(`Anexos devem ter no máximo ${formatAttachmentSize(MAX_CHAT_ATTACHMENT_BYTES)}.`);
     }
     return { blob: file, mimeType: file.type || "application/octet-stream" };
   }
   if (file.size > MAX_CHAT_ATTACHMENT_SOURCE_IMAGE_BYTES) {
-    throw new Error(`Images must be ${formatAttachmentSize(MAX_CHAT_ATTACHMENT_SOURCE_IMAGE_BYTES)} or smaller before resizing.`);
+    throw new Error(`Imagens devem ter no máximo ${formatAttachmentSize(MAX_CHAT_ATTACHMENT_SOURCE_IMAGE_BYTES)} antes de redimensionar.`);
   }
 
   const bitmap = await createImageBitmap(file);
@@ -395,7 +395,7 @@ async function prepareChatAttachment(file: File): Promise<{blob: Blob, mimeType:
     canvas.width = width;
     canvas.height = height;
     const ctx = canvas.getContext("2d");
-    if (!ctx) throw new Error("Failed to get 2D canvas context.");
+    if (!ctx) throw new Error("Falha ao obter o contexto 2D do canvas.");
     ctx.drawImage(bitmap, 0, 0, width, height);
 
     // Preserve supported source formats when resizing. In particular, converting PNG to JPEG would
@@ -405,7 +405,7 @@ async function prepareChatAttachment(file: File): Promise<{blob: Blob, mimeType:
     const quality = outputMimeType === "image/png" ? undefined : 0.85;
     const blob = await canvasToBlob(canvas, outputMimeType, quality);
     if (blob.size > MAX_CHAT_ATTACHMENT_BYTES) {
-      throw new Error(`Attachments must be ${formatAttachmentSize(MAX_CHAT_ATTACHMENT_BYTES)} or smaller.`);
+      throw new Error(`Anexos devem ter no máximo ${formatAttachmentSize(MAX_CHAT_ATTACHMENT_BYTES)}.`);
     }
     return { blob, mimeType: outputMimeType };
   } finally {
