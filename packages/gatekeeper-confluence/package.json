@@ -20,7 +20,7 @@
     "node-html-parser": "^7.1.0"
   },
   "devDependencies": {
-    "typescript": "^5.9.3",
+    "typescript": "^7.0.2",
     "vitest": "^3.2.7",
     "wrangler": "^4.116.0"
   }
