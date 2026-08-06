@@ -14,6 +14,8 @@ overrides:
   # - @lezer/markdown is a deep transitive of @codemirror/lang-markdown.
   '@types/node': 26.1.0
   '@lezer/markdown': 1.6.4
+  # Keep Miniflare's HTTP client on the patched 7.x release until its dependency range moves.
+  undici: 7.29.0
 
 # Reject dependency versions published within this many minutes (24h), matching the
 # CI supply-chain policy so local installs can't commit a too-fresh lockfile.

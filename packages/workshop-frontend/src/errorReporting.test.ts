@@ -35,6 +35,25 @@ describe('Workshop reporter initialization', () => {
     expect(addEventListener).not.toHaveBeenCalled()
   })
 
+  it('uses getRandomValues when randomUUID is unavailable', async () => {
+    vi.resetModules()
+    vi.stubEnv('VITE_FRONTEND_ERROR_REPORTING', 'true')
+    const getRandomValues = vi.fn<(bytes: Uint8Array) => Uint8Array>((bytes) => {
+      bytes.fill(0xab)
+      return bytes
+    })
+    vi.stubGlobal('crypto', { getRandomValues })
+    const fetch = vi.fn<typeof globalThis.fetch>().mockResolvedValue(new Response())
+    vi.stubGlobal('fetch', fetch)
+
+    const module = await import('./errorReporting')
+    module.reportIssue('test.secure-fallback-session', new Error('boom'))
+    await vi.waitFor(() => expect(fetch).toHaveBeenCalledOnce())
+    const body = JSON.parse(fetch.mock.calls[0][1]?.body as string)
+    expect(getRandomValues).toHaveBeenCalledOnce()
+    expect(body.sessionId).toBe(`session-${'ab'.repeat(16)}`)
+  })
+
   it('uses a fallback session ID when randomUUID and storage are unavailable', async () => {
     vi.resetModules()
     vi.stubEnv('VITE_FRONTEND_ERROR_REPORTING', 'true')
